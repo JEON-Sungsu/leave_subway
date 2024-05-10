@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leave_subway/common/const/color.dart';
 
 class MaterialDialog extends StatelessWidget {
   final String title;
@@ -24,12 +25,23 @@ class MaterialDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: onPressAction,
-          child: Text(actionButtonTitle),
+          child: Text(
+            actionButtonTitle,
+            style: const TextStyle(
+              color: PRIMARY_COLOR,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
         if (hasCancelButton)
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('닫기'),
+            child: const Text(
+              '닫기',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           )
       ],
     );

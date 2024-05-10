@@ -41,14 +41,22 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
           title:
               const Text('내리라', style: TextStyle(fontWeight: FontWeight.w700)),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.settings),),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.more_horiz_outlined),
+            ),
           ],
         ),
-        body: Center(
-          child: _PermissionDeniedForeverUI(
-            serviceEnabled: widget._serviceEnabled,
-          ),
-        ),
+        body: widget._permission == LocationPermission.denied ||
+                widget._permission == LocationPermission.deniedForever
+            ? Center(
+                child: _PermissionDeniedForeverUI(
+                  serviceEnabled: widget._serviceEnabled,
+                ),
+              )
+            : const Center(
+                child: Text('권한 허용 됨'),
+              ),
       ),
     );
   }
@@ -62,7 +70,7 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
               builder: (BuildContext context) {
                 return CupertinoDialog(
                   title: '알림',
-                  content: '기기 위치에 접근 권한을 허용해야 원활한 서비스 이용이 가능합니다.',
+                  content: '본 서비스의 원활한 사용을 위해서는 기기의 위치 접근 권한 허용이 필요합니다.',
                   hasCancelButton: false,
                   actionButtonTitle: '확인',
                   onPressAction: () {
@@ -75,7 +83,7 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
               builder: (context) {
                 return MaterialDialog(
                   title: '알림',
-                  content: '기기 위치에 접근 권한을 허용해야 원활한 서비스 이용이 가능합니다.',
+                  content: '본 서비스의 원활한 사용을 위해서는 기기의 위치 접근 권한 허용이 필요합니다.',
                   hasCancelButton: false,
                   actionButtonTitle: '확인',
                   onPressAction: () {
@@ -102,14 +110,15 @@ class _PermissionDeniedForeverUI extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(_serviceEnabled
-              ? '본 서비스를 원활한 사용을 위해서\n 기기의 위치 접근 권한을 허용해주세요.'
-              : '해당 디바이스는, 위치정보수집 기능이 불가능한 디바이스 입니다.',
+          Text(
+            _serviceEnabled
+                ? '본 서비스의 원활한 사용을 위해서는\n 기기의 위치 접근 권한 허용이 필요합니다.'
+                : '해당 디바이스는, 위치정보수집 기능이 불가능한 디바이스 입니다.',
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
           ),
+          const SizedBox(height: 16.0),
           if (_serviceEnabled)
-            const SizedBox(height: 16.0),
             Center(
               child: ElevatedButton(
                 onPressed: () {

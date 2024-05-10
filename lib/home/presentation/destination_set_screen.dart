@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,7 @@ import 'package:leave_subway/common/component/cupertino_dialog.dart';
 import 'package:leave_subway/common/component/material_dialog.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:leave_subway/common/const/color.dart';
+import 'package:leave_subway/core/location/location_setting.dart';
 
 class DestinationSetScreen extends StatefulWidget {
   final bool _serviceEnabled;
@@ -24,12 +26,20 @@ class DestinationSetScreen extends StatefulWidget {
 }
 
 class _DestinationSetScreenState extends State<DestinationSetScreen> {
+  late StreamSubscription<Position> _positionStreamSubscription;
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
       _showAlert();
     });
+  }
+
+  @override
+  void dispose() {
+    _positionStreamSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -54,8 +64,23 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
                   serviceEnabled: widget._serviceEnabled,
                 ),
               )
-            : const Center(
-                child: Text('권한 허용 됨'),
+            : Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _positionStreamSubscription = getStartLocationSubscription(37.556054, 126.982859);
+                      _positionStreamSubscription.onData((data) {
+                        double distanceInMeters = Geolocator.distanceBetween(data.latitude, data.longitude, 37.566003, 126.982797);
+                        print(distanceInMeters);
+                        print('${data.latitude}, ${data.longitude}');
+                        if (distanceInMeters <= 1000) {
+                          print('목적지 1km 이내입니다.');
+                        }
+                      });
+                    });
+                  },
+                  child: const Text('위치추적 시작'),
+                ),
               ),
       ),
     );

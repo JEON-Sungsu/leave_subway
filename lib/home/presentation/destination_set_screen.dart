@@ -3,23 +3,25 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:leave_subway/common/component/cupertino_dialog.dart';
 import 'package:leave_subway/common/component/material_dialog.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:leave_subway/common/const/color.dart';
 import 'package:leave_subway/core/location/location_setting.dart';
+import 'package:leave_subway/core/notification/local_notification_setting.dart';
 
 class DestinationSetScreen extends StatefulWidget {
-  final bool _serviceEnabled;
-  final LocationPermission _permission;
+  final bool _locationServiceEnabled;
+  final LocationPermission _locationPermission;
 
   const DestinationSetScreen({
     super.key,
-    required bool serviceEnabled,
-    required LocationPermission permission,
-  })  : _serviceEnabled = serviceEnabled,
-        _permission = permission;
+    required bool locationServiceEnabled,
+    required LocationPermission locationPermission,
+  })  : _locationServiceEnabled = locationServiceEnabled,
+        _locationPermission = locationPermission;
 
   @override
   State<DestinationSetScreen> createState() => _DestinationSetScreenState();
@@ -57,29 +59,64 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
             ),
           ],
         ),
-        body: widget._permission == LocationPermission.denied ||
-                widget._permission == LocationPermission.deniedForever
+        body: widget._locationPermission == LocationPermission.denied ||
+                widget._locationPermission == LocationPermission.deniedForever
             ? Center(
-                child: _PermissionDeniedForeverUI(
-                  serviceEnabled: widget._serviceEnabled,
+                child: _locationPermissionDeniedForeverUI(
+                  serviceEnabled: widget._locationServiceEnabled,
                 ),
               )
-            : Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _positionStreamSubscription = getStartLocationSubscription(37.556054, 126.982859);
-                      _positionStreamSubscription.onData((data) {
-                        double distanceInMeters = Geolocator.distanceBetween(data.latitude, data.longitude, 37.566003, 126.982797);
-                        print(distanceInMeters);
-                        print('${data.latitude}, ${data.longitude}');
-                        if (distanceInMeters <= 1000) {
-                          print('목적지 1km 이내입니다.');
-                        }
-                      });
-                    });
-                  },
-                  child: const Text('위치추적 시작'),
+            : SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _positionStreamSubscription =
+                              getStartLocationSubscription(
+                                  37.556054, 126.982859);
+                          _positionStreamSubscription.onData((data) {
+                            double distanceInMeters =
+                                Geolocator.distanceBetween(data.latitude,
+                                    data.longitude, 37.566003, 126.982797);
+                            print(distanceInMeters);
+                            print('${data.latitude}, ${data.longitude}');
+                            if (distanceInMeters <= 1000) {
+                              print('목적지 1km 이내입니다.');
+                            }
+                          });
+                        });
+                      },
+                      child: const Text('위치추적 시작'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        NotificationDetails details = const NotificationDetails(
+                          iOS: DarwinNotificationDetails(
+                            presentAlert: true,
+                            presentBadge: true,
+                            presentSound: true,
+                          ),
+                          android: AndroidNotificationDetails(
+                            "show_test",
+                            "show_test",
+                            importance: Importance.max,
+                            priority: Priority.high,
+                          ),
+                        );
+                        await localNotification.show(
+                          0,
+                          "타이틀이 보여지는 영역입니다.",
+                          "컨텐츠 내용이 보여지는 영역입니다.",
+                          details,
+                        );
+                      },
+                      child: const Text('푸쉬알림 테스트'),
+                    ),
+                  ],
                 ),
               ),
       ),
@@ -87,8 +124,8 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
   }
 
   void _showAlert() {
-    if (widget._permission == LocationPermission.denied ||
-        widget._permission == LocationPermission.deniedForever) {
+    if (widget._locationPermission == LocationPermission.denied ||
+        widget._locationPermission == LocationPermission.deniedForever) {
       Platform.isIOS
           ? showCupertinoModalPopup(
               context: context,
@@ -121,11 +158,12 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
   }
 }
 
-class _PermissionDeniedForeverUI extends StatelessWidget {
-  final bool _serviceEnabled;
+class _locationPermissionDeniedForeverUI extends StatelessWidget {
+  final bool _locationServiceEnabled;
 
-  const _PermissionDeniedForeverUI({super.key, required bool serviceEnabled})
-      : _serviceEnabled = serviceEnabled;
+  const _locationPermissionDeniedForeverUI(
+      {super.key, required bool serviceEnabled})
+      : _locationServiceEnabled = serviceEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -136,14 +174,14 @@ class _PermissionDeniedForeverUI extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            _serviceEnabled
+            _locationServiceEnabled
                 ? '본 서비스의 원활한 사용을 위해서는\n 기기의 위치 접근 권한 허용이 필요합니다.'
                 : '해당 디바이스는, 위치정보수집 기능이 불가능한 디바이스 입니다.',
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
           ),
           const SizedBox(height: 16.0),
-          if (_serviceEnabled)
+          if (_locationServiceEnabled)
             Center(
               child: ElevatedButton(
                 onPressed: () {

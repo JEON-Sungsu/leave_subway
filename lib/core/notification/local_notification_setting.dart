@@ -8,9 +8,9 @@ Future<void> initLocalNotification() async {
   const AndroidInitializationSettings('asset/image/main_avatar_3.JPG');
   DarwinInitializationSettings initSettingsIOS =
   const DarwinInitializationSettings(
-    requestSoundPermission: true,
-    requestBadgePermission: true,
-    requestAlertPermission: true,
+    requestSoundPermission: false,
+    requestBadgePermission: false,
+    requestAlertPermission: false,
   );
   InitializationSettings initSettings = InitializationSettings(
     android: initSettingsAndroid,

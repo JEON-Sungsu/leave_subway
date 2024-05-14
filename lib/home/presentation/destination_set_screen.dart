@@ -11,17 +11,21 @@ import 'package:app_settings/app_settings.dart';
 import 'package:leave_subway/common/const/color.dart';
 import 'package:leave_subway/core/location/location_setting.dart';
 import 'package:leave_subway/core/notification/local_notification_setting.dart';
+import 'package:permission_handler/permission_handler.dart' as permission;
 
 class DestinationSetScreen extends StatefulWidget {
-  final bool _locationServiceEnabled;
-  final LocationPermission _locationPermission;
+  final permission.PermissionStatus _locationPermission;
+  final permission.PermissionStatus _notificationPermission;
+  final permission.ServiceStatus _locationServiceStatus;
 
   const DestinationSetScreen({
     super.key,
-    required bool locationServiceEnabled,
-    required LocationPermission locationPermission,
-  })  : _locationServiceEnabled = locationServiceEnabled,
-        _locationPermission = locationPermission;
+    required permission.PermissionStatus locationPermission,
+    required permission.PermissionStatus notificationPermission,
+    required permission.ServiceStatus locationServiceStatus,
+  })  : _locationPermission = locationPermission,
+        _notificationPermission = notificationPermission,
+        _locationServiceStatus = locationServiceStatus;
 
   @override
   State<DestinationSetScreen> createState() => _DestinationSetScreenState();
@@ -59,12 +63,10 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
             ),
           ],
         ),
-        body: widget._locationPermission == LocationPermission.denied ||
-                widget._locationPermission == LocationPermission.deniedForever
-            ? Center(
-                child: _locationPermissionDeniedForeverUI(
-                  serviceEnabled: widget._locationServiceEnabled,
-                ),
+        body: widget._locationPermission == permission.PermissionStatus.denied ||
+                widget._locationPermission == permission.PermissionStatus.permanentlyDenied
+            ? const Center(
+                child: _locationPermissionDeniedForeverUI(),
               )
             : SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -94,6 +96,7 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
+                        print('버튼눌림');
                         NotificationDetails details = const NotificationDetails(
                           iOS: DarwinNotificationDetails(
                             presentAlert: true,
@@ -124,8 +127,8 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
   }
 
   void _showAlert() {
-    if (widget._locationPermission == LocationPermission.denied ||
-        widget._locationPermission == LocationPermission.deniedForever) {
+    if (widget._locationPermission == permission.PermissionStatus.denied ||
+        widget._locationPermission == permission.PermissionStatus.permanentlyDenied) {
       Platform.isIOS
           ? showCupertinoModalPopup(
               context: context,
@@ -159,11 +162,7 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
 }
 
 class _locationPermissionDeniedForeverUI extends StatelessWidget {
-  final bool _locationServiceEnabled;
-
-  const _locationPermissionDeniedForeverUI(
-      {super.key, required bool serviceEnabled})
-      : _locationServiceEnabled = serviceEnabled;
+  const _locationPermissionDeniedForeverUI({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -173,38 +172,35 @@ class _locationPermissionDeniedForeverUI extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            _locationServiceEnabled
-                ? '본 서비스의 원활한 사용을 위해서는\n 기기의 위치 접근 권한 허용이 필요합니다.'
-                : '해당 디바이스는, 위치정보수집 기능이 불가능한 디바이스 입니다.',
+          const Text(
+            '본 서비스의 원활한 사용을 위해서는\n 기기의 위치 접근 권한 허용이 필요합니다.',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
           ),
           const SizedBox(height: 16.0),
-          if (_locationServiceEnabled)
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  AppSettings.openAppSettings(
-                      type: Platform.isIOS
-                          ? AppSettingsType.settings
-                          : AppSettingsType.location);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: PRIMARY_COLOR,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                AppSettings.openAppSettings(
+                    type: Platform.isIOS
+                        ? AppSettingsType.settings
+                        : AppSettingsType.settings);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: PRIMARY_COLOR,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: const Text(
-                  '설정으로 이동하기',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
+              ),
+              child: const Text(
+                '설정으로 이동하기',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
+          ),
         ],
       ),
     );

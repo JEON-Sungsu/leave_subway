@@ -4,25 +4,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:leave_subway/common/const/color.dart';
-import 'package:leave_subway/core/permission/permission_request.dart';
 import 'package:leave_subway/home/presentation/destination_set_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../core/notification/local_notification_setting.dart';
-
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  final PermissionStatus _locationPermission;
+  final PermissionStatus _notificationPermission;
+  final ServiceStatus _locationServiceStatus;
+
+  const OnboardingScreen({
+    super.key,
+    required PermissionStatus locationPermission,
+    required PermissionStatus notificationPermission,
+    required ServiceStatus locationServiceStatus,
+  })  : _locationPermission = locationPermission,
+        _notificationPermission = notificationPermission,
+        _locationServiceStatus = locationServiceStatus;
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  late PermissionStatus _locationPermission;
-  late PermissionStatus _notificationPermission;
-  late ServiceStatus _locationServiceStatus;
   bool _isButtonVisible = false;
 
   @override
@@ -64,20 +69,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     minimumSize: const Size.fromHeight(50),
                   ),
                   onPressed: () async {
-                    _locationServiceStatus = await isEnableGPS();
-                    _locationPermission = await requestLocationPermission();
-                    _notificationPermission =
-                        await requestNotificationPermission();
-                    initLocalNotification();
-
-                    Future.delayed(const Duration(seconds: 1), () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (_) => DestinationSetScreen(),
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (_) => DestinationSetScreen(
+                          locationPermission: widget._locationPermission,
+                          notificationPermission: widget._notificationPermission,
+                          locationServiceStatus: widget._locationServiceStatus,
                         ),
-                        (route) => false,
-                      );
-                    });
+                      ),
+                      (route) => false,
+                    );
                   },
                   child: const Text(
                     '시작하기',
@@ -90,7 +91,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
             ),
-            SizedBox(height: Platform.isIOS ? MediaQuery.of(context).padding.bottom : 20)
+            SizedBox(
+                height:
+                    Platform.isIOS ? MediaQuery.of(context).padding.bottom : 20)
           ],
         ),
       ),

@@ -26,7 +26,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    initLocalNotification();
   }
 
   void _onTextWidgetRendered() {
@@ -67,6 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     _locationPermission = await requestLocationPermission();
                     _notificationPermission =
                         await requestNotificationPermission();
+                    initLocalNotification();
 
                     Future.delayed(const Duration(seconds: 1), () {
                       Navigator.of(context).pushAndRemoveUntil(

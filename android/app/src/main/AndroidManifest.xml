@@ -13,6 +13,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:enableOnBackInvokedCallback="true"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:name=".MainActivity"

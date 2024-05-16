@@ -40,6 +40,7 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
     Future.microtask(() {
       _showAlert();
     });
+    print('위치퍼미션 ${widget._locationPermission}');
   }
 
   @override
@@ -119,6 +120,7 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
                       },
                       child: const Text('푸쉬알림 테스트'),
                     ),
+                    Image.asset('asset/icon/ic_launcher/png')
                   ],
                 ),
               ),

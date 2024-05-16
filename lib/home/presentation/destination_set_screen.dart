@@ -14,18 +14,7 @@ import 'package:leave_subway/core/notification/local_notification_setting.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 
 class DestinationSetScreen extends StatefulWidget {
-  final permission.PermissionStatus _locationPermission;
-  final permission.PermissionStatus _notificationPermission;
-  final permission.ServiceStatus _locationServiceStatus;
-
-  const DestinationSetScreen({
-    super.key,
-    required permission.PermissionStatus locationPermission,
-    required permission.PermissionStatus notificationPermission,
-    required permission.ServiceStatus locationServiceStatus,
-  })  : _locationPermission = locationPermission,
-        _notificationPermission = notificationPermission,
-        _locationServiceStatus = locationServiceStatus;
+  const DestinationSetScreen({super.key});
 
   @override
   State<DestinationSetScreen> createState() => _DestinationSetScreenState();
@@ -34,13 +23,16 @@ class DestinationSetScreen extends StatefulWidget {
 class _DestinationSetScreenState extends State<DestinationSetScreen> {
   late StreamSubscription<Position> _positionStreamSubscription;
 
+  late permission.PermissionStatus _locationPermission;
+  late permission.PermissionStatus _notificationPermission;
+  late permission.ServiceStatus _locationServiceStatus;
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
       _showAlert();
     });
-    print('위치퍼미션 ${widget._locationPermission}');
   }
 
   @override
@@ -64,8 +56,10 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
             ),
           ],
         ),
-        body: widget._locationPermission == permission.PermissionStatus.denied ||
-                widget._locationPermission == permission.PermissionStatus.permanentlyDenied
+        body: _locationPermission ==
+                    permission.PermissionStatus.denied ||
+                _locationPermission ==
+                    permission.PermissionStatus.permanentlyDenied
             ? const Center(
                 child: _locationPermissionDeniedForeverUI(),
               )
@@ -105,11 +99,10 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
                             presentSound: true,
                           ),
                           android: AndroidNotificationDetails(
-                            "show_test",
-                            "show_test",
-                            importance: Importance.max,
-                            priority: Priority.high,
-                          ),
+                              "show_test", "show_test",
+                              importance: Importance.max,
+                              priority: Priority.high,
+                              icon: 'ic_launcher'),
                         );
                         await localNotification.show(
                           0,
@@ -120,7 +113,6 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
                       },
                       child: const Text('푸쉬알림 테스트'),
                     ),
-                    Image.asset('asset/icon/ic_launcher/png')
                   ],
                 ),
               ),
@@ -129,8 +121,9 @@ class _DestinationSetScreenState extends State<DestinationSetScreen> {
   }
 
   void _showAlert() {
-    if (widget._locationPermission == permission.PermissionStatus.denied ||
-        widget._locationPermission == permission.PermissionStatus.permanentlyDenied) {
+    if (_locationPermission == permission.PermissionStatus.denied ||
+        _locationPermission ==
+            permission.PermissionStatus.permanentlyDenied) {
       Platform.isIOS
           ? showCupertinoModalPopup(
               context: context,

@@ -5,7 +5,7 @@ final FlutterLocalNotificationsPlugin localNotification = FlutterLocalNotificati
 
 Future<void> initLocalNotification() async {
   AndroidInitializationSettings initSettingsAndroid =
-  const AndroidInitializationSettings('asset/icon/ic_launcher.png');
+  const AndroidInitializationSettings('ic_launcher');
   DarwinInitializationSettings initSettingsIOS =
   const DarwinInitializationSettings(
     requestSoundPermission: false,

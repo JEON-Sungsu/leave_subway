@@ -4,24 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:leave_subway/common/const/color.dart';
-import 'package:leave_subway/home/presentation/destination_set_screen.dart';
+import 'package:leave_subway/core/permission/permission_manager.dart';
+import 'package:leave_subway/seoul_metro/presentation/seoul_metro_screen.dart';
 import 'package:lottie/lottie.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  final PermissionStatus _locationPermission;
-  final PermissionStatus _notificationPermission;
-  final ServiceStatus _locationServiceStatus;
+  final bool _isFirstInstall;
 
-  const OnboardingScreen({
-    super.key,
-    required PermissionStatus locationPermission,
-    required PermissionStatus notificationPermission,
-    required ServiceStatus locationServiceStatus,
-  })  : _locationPermission = locationPermission,
-        _notificationPermission = notificationPermission,
-        _locationServiceStatus = locationServiceStatus;
+  const OnboardingScreen({super.key, required bool isFirstInstall})
+      : _isFirstInstall = isFirstInstall;
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -43,6 +36,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _permission = context.watch<PermissionManager>();
     return Scaffold(
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -71,12 +65,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPressed: () async {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (_) => DestinationSetScreen(
-                          locationPermission: widget._locationPermission,
-                          notificationPermission: widget._notificationPermission,
-                          locationServiceStatus: widget._locationServiceStatus,
-                        ),
-                      ),
+                          builder: (_) => ChangeNotifierProvider.value(
+                                value: _permission,
+                                child: SeoulMetroScreen(
+                                  isFirstInstall: widget._isFirstInstall,
+                                ),
+                              )),
                       (route) => false,
                     );
                   },
@@ -93,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             SizedBox(
                 height:
-                    Platform.isIOS ? MediaQuery.of(context).padding.bottom : 20)
+                    Platform.isIOS ? MediaQuery.of(context).padding.bottom : 24)
           ],
         ),
       ),

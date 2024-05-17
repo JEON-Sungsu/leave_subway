@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:leave_subway/common/presentation/onboarding_screen.dart';
+import 'package:leave_subway/core/notification/local_notification_setting.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
-import 'package:leave_subway/home/presentation/destination_set_screen.dart';
+import 'package:leave_subway/seoul_metro/presentation/seoul_metro_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  final PermissionManager permissionManager = PermissionManager();
-  await permissionManager.isEnableGPS();
-  await permissionManager.requestLocationPermission();
-  await permissionManager.requestNotificationPermission();
+  final PermissionManager _permissionManager = PermissionManager();
+  await _permissionManager.isEnableGPS();
+  await _permissionManager.requestLocationPermission();
+  await _permissionManager.requestNotificationPermission();
+  _permissionManager.setPermissionStatus();
+  initLocalNotification();
   FlutterNativeSplash.remove();
 
-  runApp(ChangeNotifierProvider(
-    create: (_) => permissionManager,
+  runApp(ChangeNotifierProvider.value(
+    value: _permissionManager,
     child: const _App(),
   ));
 }
@@ -26,7 +29,7 @@ class _App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final permission = context.watch<PermissionManager>();
+    final _permission = context.watch<PermissionManager>();
     return MaterialApp(
       title: '내리라',
       home: FutureBuilder<bool>(
@@ -37,18 +40,15 @@ class _App extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-
           if (snapshot.data!) {
-            return OnboardingScreen(
-              locationPermission: permission.locationPermission,
-              notificationPermission: permission.notificationPermission,
-              locationServiceStatus: permission.locationServiceStatus,
+            return ChangeNotifierProvider.value(
+              value: _permission,
+              child: OnboardingScreen(isFirstInstall: snapshot.data!),
             );
           } else {
-            return DestinationSetScreen(
-              locationPermission: permission.locationPermission,
-              notificationPermission: permission.notificationPermission,
-              locationServiceStatus: permission.locationServiceStatus,
+            return ChangeNotifierProvider.value(
+              value: _permission,
+              child: SeoulMetroScreen(isFirstInstall: snapshot.data!),
             );
           }
         },

@@ -1,13 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:leave_subway/common/const/color.dart';
-import 'package:leave_subway/core/permission/permission_manager.dart';
-import 'package:leave_subway/seoul_metro/presentation/seoul_metro_screen.dart';
+import 'package:leave_subway/capital_area_metro/presentation/capital_area_metro_screen.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -61,7 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPressed: () async {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (_) => SeoulMetroScreen()),
+                          builder: (_) => CapitalAreaMetroScreen()),
                       (route) => false,
                     );
                   },

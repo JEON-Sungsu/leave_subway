@@ -3,24 +3,30 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
-import 'package:leave_subway/seoul_metro/presentation/unauthorized/permission_denied.dart';
-import 'package:provider/provider.dart';
+import 'package:leave_subway/capital_area_metro/data/data_source/capital_area_metro_data_source.dart';
+import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_alert.dart';
+import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_denied.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SeoulMetroScreen extends StatefulWidget {
-  const SeoulMetroScreen({super.key});
+class CapitalAreaMetroScreen extends StatefulWidget {
+  const CapitalAreaMetroScreen({super.key});
+
   @override
-  State<SeoulMetroScreen> createState() => _SeoulMetroScreenState();
+  State<CapitalAreaMetroScreen> createState() => _CapitalAreaMetroScreenState();
 }
 
-class _SeoulMetroScreenState extends State<SeoulMetroScreen> {
+class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
   late StreamSubscription<Position> _positionStreamSubscription;
   final PermissionManager _permissionManager = PermissionManager.getInstance();
+  final CapitalAreaMetroDataSource dataSource = CapitalAreaMetroDataSource();
+
   void _updateUi() => setState(() {});
 
   @override
   void initState() {
     super.initState();
     _permissionManager.addListener(_updateUi);
+    _noticePermission();
   }
 
   @override
@@ -28,6 +34,15 @@ class _SeoulMetroScreenState extends State<SeoulMetroScreen> {
     _positionStreamSubscription.cancel();
     _permissionManager.removeListener(_updateUi);
     super.dispose();
+  }
+
+  Future<void> _noticePermission() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstInstall = prefs.getBool('isFirstInstall')!;
+    if (isFirstInstall) {
+      await prefs.setBool('isFirstInstall', false);
+    }
+    _showAlert();
   }
 
   @override
@@ -65,45 +80,28 @@ class _SeoulMetroScreenState extends State<SeoulMetroScreen> {
             : SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Column(
-                  children: [Text('야호')],
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _showAlert();
+                      },
+                      child: Text('얼럿'),
+                    ),
+                  ],
                 ),
               ),
       ),
     );
   }
 
-// ''void _showAlert() {
-//   if (_permissionStatus == CombinedPermissionStatus.locationDenied) {
-//     Platform.isIOS
-//         ? showCupertinoModalPopup(
-//             context: context,
-//             builder: (BuildContext context) {
-//               return CupertinoDialog(
-//                 title: '알림',
-//                 content: '본 서비스의 원활한 사용을 위해서는 기기의 위치 접근 권한 허용이 필요합니다.',
-//                 hasCancelButton: false,
-//                 actionButtonTitle: '확인',
-//                 onPressAction: () {
-//                   Navigator.pop(context, 'Cancel');
-//                 },
-//               );
-//             })
-//         : showDialog(
-//             context: context,
-//             builder: (context) {
-//               return MaterialDialog(
-//                 title: '알림',
-//                 content: '본 서비스의 원활한 사용을 위해서는 기기의 위치 접근 권한 허용이 필요합니다.',
-//                 hasCancelButton: false,
-//                 actionButtonTitle: '확인',
-//                 onPressAction: () {
-//                   Navigator.pop(context, 'Cancel');
-//                 },
-//               );
-//             },
-//           );
-//   }
-// }''
+  void _showAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PermissionAlert();
+      },
+    );
+  }
 }
 // _positionStreamSubscription =
 // getStartLocationSubscription(

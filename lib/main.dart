@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:leave_subway/common/presentation/onboarding_screen.dart';
 import 'package:leave_subway/core/notification/local_notification_setting.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
-import 'package:leave_subway/seoul_metro/presentation/seoul_metro_screen.dart';
+import 'package:leave_subway/capital_area_metro/presentation/capital_area_metro_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -38,7 +38,7 @@ class _App extends StatelessWidget {
           if (snapshot.data!) {
             return OnboardingScreen();
           } else {
-            return SeoulMetroScreen();
+            return CapitalAreaMetroScreen();
           }
         },
       ),
@@ -48,9 +48,11 @@ class _App extends StatelessWidget {
   Future<bool> _checkFirstInstall() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstInstall = prefs.getBool('isFirstInstall') ?? true;
+
     if (isFirstInstall) {
-      await prefs.setBool('isFirstInstall', false);
+      await prefs.setBool('isFirstInstall', true);
     }
+
     return isFirstInstall;
   }
 }

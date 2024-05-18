@@ -7,28 +7,31 @@ import 'package:leave_subway/seoul_metro/presentation/unauthorized/permission_de
 import 'package:provider/provider.dart';
 
 class SeoulMetroScreen extends StatefulWidget {
-  final bool _isFirstInstall;
-
-  const SeoulMetroScreen({super.key, required bool isFirstInstall})
-      : _isFirstInstall = isFirstInstall;
-
+  const SeoulMetroScreen({super.key});
   @override
   State<SeoulMetroScreen> createState() => _SeoulMetroScreenState();
 }
 
 class _SeoulMetroScreenState extends State<SeoulMetroScreen> {
   late StreamSubscription<Position> _positionStreamSubscription;
+  final PermissionManager _permissionManager = PermissionManager.getInstance();
+  void _updateUi() => setState(() {});
+
+  @override
+  void initState() {
+    super.initState();
+    _permissionManager.addListener(_updateUi);
+  }
 
   @override
   void dispose() {
     _positionStreamSubscription.cancel();
+    _permissionManager.removeListener(_updateUi);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _permissionManager = context.watch<PermissionManager>();
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

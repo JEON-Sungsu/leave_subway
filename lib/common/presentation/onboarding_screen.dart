@@ -11,11 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  final bool _isFirstInstall;
 
-  const OnboardingScreen({super.key, required bool isFirstInstall})
-      : _isFirstInstall = isFirstInstall;
-
+  const OnboardingScreen({super.key});
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
@@ -36,7 +33,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _permission = context.watch<PermissionManager>();
     return Scaffold(
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -65,12 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPressed: () async {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (_) => ChangeNotifierProvider.value(
-                                value: _permission,
-                                child: SeoulMetroScreen(
-                                  isFirstInstall: widget._isFirstInstall,
-                                ),
-                              )),
+                          builder: (_) => SeoulMetroScreen()),
                       (route) => false,
                     );
                   },

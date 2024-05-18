@@ -10,6 +10,14 @@ enum CombinedPermissionStatus {
 }
 
 class PermissionManager with ChangeNotifier {
+  static final PermissionManager _instance = PermissionManager._internal();
+
+  PermissionManager._internal();
+
+  factory PermissionManager.getInstance() {
+    return _instance;
+  }
+
   late PermissionStatus _locationPermission;
   late ServiceStatus _locationServiceStatus;
   late PermissionStatus _notificationPermission;
@@ -108,7 +116,7 @@ class PermissionManager with ChangeNotifier {
   }
 
   Future<void> refreshPermission() async {
-    _locationPermission = await Permission.notification.status;
+    _locationPermission = await Permission.location.status;
     _notificationPermission = await Permission.notification.status;
     _locationServiceStatus = await Permission.locationWhenInUse.serviceStatus;
     setPermissionStatus();

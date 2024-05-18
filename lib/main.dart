@@ -4,24 +4,20 @@ import 'package:leave_subway/common/presentation/onboarding_screen.dart';
 import 'package:leave_subway/core/notification/local_notification_setting.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
 import 'package:leave_subway/seoul_metro/presentation/seoul_metro_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  final PermissionManager _permissionManager = PermissionManager();
-  await _permissionManager.isEnableGPS();
-  await _permissionManager.requestLocationPermission();
-  await _permissionManager.requestNotificationPermission();
-  _permissionManager.setPermissionStatus();
+  final PermissionManager permissionManager = PermissionManager.getInstance();
+  await permissionManager.isEnableGPS();
+  await permissionManager.requestLocationPermission();
+  await permissionManager.requestNotificationPermission();
+  permissionManager.setPermissionStatus();
   initLocalNotification();
   FlutterNativeSplash.remove();
 
-  runApp(ChangeNotifierProvider.value(
-    value: _permissionManager,
-    child: const _App(),
-  ));
+  runApp(const _App());
 }
 
 class _App extends StatelessWidget {
@@ -29,7 +25,6 @@ class _App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _permission = context.watch<PermissionManager>();
     return MaterialApp(
       title: '내리라',
       home: FutureBuilder<bool>(
@@ -41,15 +36,9 @@ class _App extends StatelessWidget {
             );
           }
           if (snapshot.data!) {
-            return ChangeNotifierProvider.value(
-              value: _permission,
-              child: OnboardingScreen(isFirstInstall: snapshot.data!),
-            );
+            return OnboardingScreen();
           } else {
-            return ChangeNotifierProvider.value(
-              value: _permission,
-              child: SeoulMetroScreen(isFirstInstall: snapshot.data!),
-            );
+            return SeoulMetroScreen();
           }
         },
       ),

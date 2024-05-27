@@ -120,8 +120,6 @@ class PermissionManager with ChangeNotifier {
     _notificationPermission = await Permission.notification.status;
     _locationServiceStatus = await Permission.locationWhenInUse.serviceStatus;
     setPermissionStatus();
-    print(
-        '위치 갱신 $_locationPermission, 알림 갱신 $_notificationPermission, gps 갱신 $_locationServiceStatus');
 
     notifyListeners();
   }

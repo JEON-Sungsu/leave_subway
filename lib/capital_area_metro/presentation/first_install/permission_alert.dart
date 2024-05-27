@@ -24,7 +24,7 @@ class PermissionAlert extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
-        height: 250,
+        height: 220,
         child: Column(
           children: [
             Text(

@@ -41,8 +41,8 @@ class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
     bool isFirstInstall = prefs.getBool('isFirstInstall')!;
     if (isFirstInstall) {
       await prefs.setBool('isFirstInstall', false);
+      _showAlert();
     }
-    _showAlert();
   }
 
   @override

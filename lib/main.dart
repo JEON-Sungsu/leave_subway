@@ -9,11 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  final PermissionManager permissionManager = PermissionManager.getInstance();
-  await permissionManager.isEnableGPS();
+  final PermissionManager permissionManager = PermissionManager();
   await permissionManager.requestLocationPermission();
   await permissionManager.requestNotificationPermission();
-  permissionManager.setPermissionStatus();
   initLocalNotification();
   FlutterNativeSplash.remove();
 

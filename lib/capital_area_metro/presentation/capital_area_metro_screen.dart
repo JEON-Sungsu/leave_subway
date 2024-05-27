@@ -17,22 +17,17 @@ class CapitalAreaMetroScreen extends StatefulWidget {
 
 class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
   late StreamSubscription<Position> _positionStreamSubscription;
-  final PermissionManager _permissionManager = PermissionManager.getInstance();
-  final CapitalAreaMetroDataSource dataSource = CapitalAreaMetroDataSource();
-
-  void _updateUi() => setState(() {});
+  final PermissionManager _permissionManager = PermissionManager();
 
   @override
   void initState() {
     super.initState();
-    _permissionManager.addListener(_updateUi);
     _noticePermission();
   }
 
   @override
   void dispose() {
     _positionStreamSubscription.cancel();
-    _permissionManager.removeListener(_updateUi);
     super.dispose();
   }
 
@@ -60,36 +55,47 @@ class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
             ),
           ],
         ),
-        body: _permissionManager.permissionStatus !=
-                CombinedPermissionStatus.allGranted
-            ? Center(
+        body: FutureBuilder<CombinedPermissionStatus>(
+          future: _permissionManager.setPermissionStatus(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (snapshot.data != CombinedPermissionStatus.allGranted) {
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    PermissionDenied(
-                        permission: _permissionManager.permissionStatus),
+                    PermissionDenied(permission: snapshot.data!),
                     IconButton(
-                      onPressed: () async {
-                        await _permissionManager.refreshPermission();
+                      onPressed: () {
+                        setState(() {});
                       },
                       icon: Icon(Icons.refresh),
                     )
                   ],
                 ),
-              )
-            : SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        _showAlert();
-                      },
-                      child: Text('얼럿'),
-                    ),
-                  ],
-                ),
+              );
+            }
+
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _showAlert();
+                    },
+                    child: Text('얼럿'),
+                  ),
+                ],
               ),
+            );
+          },
+        ),
       ),
     );
   }

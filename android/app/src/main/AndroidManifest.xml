@@ -9,10 +9,11 @@
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
-        android:label="leave_subway"
+        android:label="내리라"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:enableOnBackInvokedCallback="true"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:name=".MainActivity"

@@ -1,22 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:leave_subway/common/presentation/splash_screen.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:leave_subway/common/presentation/onboarding_screen.dart';
+import 'package:leave_subway/core/notification/local_notification_setting.dart';
+import 'package:leave_subway/core/permission/permission_manager.dart';
+import 'package:leave_subway/capital_area_metro/presentation/capital_area_metro_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  final PermissionManager permissionManager = PermissionManager.getInstance();
+  await permissionManager.isEnableGPS();
+  await permissionManager.requestLocationPermission();
+  await permissionManager.requestNotificationPermission();
+  permissionManager.setPermissionStatus();
+  initLocalNotification();
+  FlutterNativeSplash.remove();
+
+  runApp(const _App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class _App extends StatelessWidget {
+  const _App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      title: '내리라',
+      home: FutureBuilder<bool>(
+        future: _checkFirstInstall(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.data!) {
+            return OnboardingScreen();
+          } else {
+            return CapitalAreaMetroScreen();
+          }
+        },
       ),
-      home: const SplashScreen(),
     );
+  }
+
+  Future<bool> _checkFirstInstall() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstInstall = prefs.getBool('isFirstInstall') ?? true;
+
+    if (isFirstInstall) {
+      await prefs.setBool('isFirstInstall', true);
+    }
+
+    return isFirstInstall;
   }
 }

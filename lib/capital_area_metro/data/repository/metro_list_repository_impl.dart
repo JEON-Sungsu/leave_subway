@@ -1,6 +1,13 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/capital_area_metro/data/data_source/capital_area_metro_data_source.dart';
 import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
 import 'package:leave_subway/capital_area_metro/domain/repository/metro_list_repository.dart';
+
+final metroListRepositoryProvider = Provider<MetroListRepositoryImpl>((ref) {
+  final dataSource = ref.watch(metroListProvider);
+
+  return MetroListRepositoryImpl(dataSource: dataSource);
+});
 
 class MetroListRepositoryImpl implements MetroListRepository {
   CapitalAreaMetroDataSource _dataSource;
@@ -11,6 +18,6 @@ class MetroListRepositoryImpl implements MetroListRepository {
 
   @override
   Future<List<Metro>> getMetroList() async {
-    return _dataSource.getMetroList();
+    return await _dataSource.getMetroList();
   }
 }

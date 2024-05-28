@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/common/presentation/onboarding_screen.dart';
 import 'package:leave_subway/core/notification/local_notification_setting.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
@@ -15,7 +16,11 @@ void main() async {
   initLocalNotification();
   FlutterNativeSplash.remove();
 
-  runApp(const _App());
+  runApp(
+    ProviderScope(
+      child: const _App(),
+    ),
+  );
 }
 
 class _App extends StatelessWidget {

@@ -1,21 +1,27 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
+import 'package:leave_subway/common/const/color.dart';
+import 'package:leave_subway/common/model/destination_list_model.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
 import 'package:leave_subway/capital_area_metro/data/data_source/capital_area_metro_data_source.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_alert.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_denied.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CapitalAreaMetroScreen extends StatefulWidget {
+class CapitalAreaMetroScreen extends ConsumerStatefulWidget {
   const CapitalAreaMetroScreen({super.key});
 
   @override
-  State<CapitalAreaMetroScreen> createState() => _CapitalAreaMetroScreenState();
+  ConsumerState<CapitalAreaMetroScreen> createState() =>
+      _CapitalAreaMetroScreenState();
 }
 
-class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
+class _CapitalAreaMetroScreenState
+    extends ConsumerState<CapitalAreaMetroScreen> {
   late StreamSubscription<Position> _positionStreamSubscription;
   final PermissionManager _permissionManager = PermissionManager();
 
@@ -42,6 +48,8 @@ class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(capitalAreaMetroScreenProvider);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -51,7 +59,7 @@ class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
           actions: [
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.more_horiz_outlined),
+              icon: const Icon(Icons.add),
             ),
           ],
         ),
@@ -81,18 +89,10 @@ class _CapitalAreaMetroScreenState extends State<CapitalAreaMetroScreen> {
               );
             }
 
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _showAlert();
-                    },
-                    child: Text('얼럿'),
-                  ),
-                ],
-              ),
+            return Column(
+              children: [
+
+              ],
             );
           },
         ),

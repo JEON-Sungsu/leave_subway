@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
 import 'package:leave_subway/common/const/color.dart';
 import 'package:leave_subway/common/model/destination_list_model.dart';
+import 'package:leave_subway/common/presentation/default_layout.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
 import 'package:leave_subway/capital_area_metro/data/data_source/capital_area_metro_data_source.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_alert.dart';
@@ -50,52 +51,42 @@ class _CapitalAreaMetroScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(capitalAreaMetroScreenProvider);
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title:
-              const Text('내리라', style: TextStyle(fontWeight: FontWeight.w700)),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.add),
-            ),
-          ],
-        ),
-        body: FutureBuilder<CombinedPermissionStatus>(
-          future: _permissionManager.setPermissionStatus(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (snapshot.data != CombinedPermissionStatus.allGranted) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PermissionDenied(permission: snapshot.data!),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
-                      icon: Icon(Icons.refresh),
-                    )
-                  ],
-                ),
-              );
-            }
-
-            return Column(
-              children: [
-
-              ],
+    return DefaultLayout(
+      title: '내리라',
+      action: IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.add),
+      ),
+      child: FutureBuilder<CombinedPermissionStatus>(
+        future: _permissionManager.setPermissionStatus(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        ),
+          }
+
+          if (snapshot.data != CombinedPermissionStatus.allGranted) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PermissionDenied(permission: snapshot.data!),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.refresh),
+                  )
+                ],
+              ),
+            );
+          }
+
+          return Column(
+            children: [],
+          );
+        },
       ),
     );
   }

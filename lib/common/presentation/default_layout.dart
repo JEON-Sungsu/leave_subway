@@ -26,6 +26,7 @@ class DefaultLayout extends StatelessWidget {
 
   AppBar? renderAppBar() {
     return AppBar(
+      centerTitle: true,
       title: Text(
         title,
         style: const TextStyle(

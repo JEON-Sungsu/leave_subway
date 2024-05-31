@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
-import 'package:leave_subway/common/const/color.dart';
-import 'package:leave_subway/common/model/destination_list_model.dart';
+import 'package:leave_subway/common/presentation/bottom_sheet.dart';
 import 'package:leave_subway/common/presentation/default_layout.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
-import 'package:leave_subway/capital_area_metro/data/data_source/capital_area_metro_data_source.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_alert.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_denied.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,11 +48,22 @@ class _CapitalAreaMetroScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(capitalAreaMetroScreenProvider);
-
     return DefaultLayout(
       title: '내리라',
       action: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          ref
+              .read(capitalAreaMetroScreenProvider.notifier)
+              .initializeScroll();
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return DestinationBottomSheet();
+            },
+            useSafeArea: true,
+            isScrollControlled: true,
+          );
+        },
         icon: Icon(Icons.add),
       ),
       child: FutureBuilder<CombinedPermissionStatus>(
@@ -84,7 +93,34 @@ class _CapitalAreaMetroScreenState
           }
 
           return Column(
-            children: [],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (state.destinations.isEmpty)
+                Center(
+                  child: Text(
+                    '등록된 목적지가 존재하지 않습니다.\n 목적지를 등록해주세요.',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              if (!state.destinations.isEmpty)
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: state.destinations.length,
+                    itemBuilder: (_, index) {
+                      return Text(state.destinations[index].toString());
+                    },
+                    separatorBuilder: (_, index) {
+                      return const SizedBox(
+                        height: 16,
+                      );
+                    },
+                  ),
+                )
+            ],
           );
         },
       ),

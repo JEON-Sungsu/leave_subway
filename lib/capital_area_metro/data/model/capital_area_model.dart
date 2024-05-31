@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
-import 'package:leave_subway/common/model/destination_list_model.dart';
 
 part 'capital_area_model.freezed.dart';
 

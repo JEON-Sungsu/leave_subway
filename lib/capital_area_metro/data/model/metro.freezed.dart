@@ -25,6 +25,7 @@ mixin _$Metro {
   num? get code => throw _privateConstructorUsedError;
   double get lat => throw _privateConstructorUsedError;
   double get lng => throw _privateConstructorUsedError;
+  bool get isTracking => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,13 @@ abstract class $MetroCopyWith<$Res> {
   factory $MetroCopyWith(Metro value, $Res Function(Metro) then) =
       _$MetroCopyWithImpl<$Res, Metro>;
   @useResult
-  $Res call({String line, String name, num? code, double lat, double lng});
+  $Res call(
+      {String line,
+      String name,
+      num? code,
+      double lat,
+      double lng,
+      bool isTracking});
 }
 
 /// @nodoc
@@ -57,6 +64,7 @@ class _$MetroCopyWithImpl<$Res, $Val extends Metro>
     Object? code = freezed,
     Object? lat = null,
     Object? lng = null,
+    Object? isTracking = null,
   }) {
     return _then(_value.copyWith(
       line: null == line
@@ -79,6 +87,10 @@ class _$MetroCopyWithImpl<$Res, $Val extends Metro>
           ? _value.lng
           : lng // ignore: cast_nullable_to_non_nullable
               as double,
+      isTracking: null == isTracking
+          ? _value.isTracking
+          : isTracking // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -90,7 +102,13 @@ abstract class _$$MetroImplCopyWith<$Res> implements $MetroCopyWith<$Res> {
       __$$MetroImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String line, String name, num? code, double lat, double lng});
+  $Res call(
+      {String line,
+      String name,
+      num? code,
+      double lat,
+      double lng,
+      bool isTracking});
 }
 
 /// @nodoc
@@ -109,6 +127,7 @@ class __$$MetroImplCopyWithImpl<$Res>
     Object? code = freezed,
     Object? lat = null,
     Object? lng = null,
+    Object? isTracking = null,
   }) {
     return _then(_$MetroImpl(
       line: null == line
@@ -131,6 +150,10 @@ class __$$MetroImplCopyWithImpl<$Res>
           ? _value.lng
           : lng // ignore: cast_nullable_to_non_nullable
               as double,
+      isTracking: null == isTracking
+          ? _value.isTracking
+          : isTracking // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -143,7 +166,8 @@ class _$MetroImpl implements _Metro {
       required this.name,
       required this.code,
       required this.lat,
-      required this.lng});
+      required this.lng,
+      this.isTracking = false});
 
   factory _$MetroImpl.fromJson(Map<String, dynamic> json) =>
       _$$MetroImplFromJson(json);
@@ -158,10 +182,13 @@ class _$MetroImpl implements _Metro {
   final double lat;
   @override
   final double lng;
+  @override
+  @JsonKey()
+  final bool isTracking;
 
   @override
   String toString() {
-    return 'Metro(line: $line, name: $name, code: $code, lat: $lat, lng: $lng)';
+    return 'Metro(line: $line, name: $name, code: $code, lat: $lat, lng: $lng, isTracking: $isTracking)';
   }
 
   @override
@@ -173,12 +200,15 @@ class _$MetroImpl implements _Metro {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.lng, lng) || other.lng == lng));
+            (identical(other.lng, lng) || other.lng == lng) &&
+            (identical(other.isTracking, isTracking) ||
+                other.isTracking == isTracking));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, line, name, code, lat, lng);
+  int get hashCode =>
+      Object.hash(runtimeType, line, name, code, lat, lng, isTracking);
 
   @JsonKey(ignore: true)
   @override
@@ -200,7 +230,8 @@ abstract class _Metro implements Metro {
       required final String name,
       required final num? code,
       required final double lat,
-      required final double lng}) = _$MetroImpl;
+      required final double lng,
+      final bool isTracking}) = _$MetroImpl;
 
   factory _Metro.fromJson(Map<String, dynamic> json) = _$MetroImpl.fromJson;
 
@@ -214,6 +245,8 @@ abstract class _Metro implements Metro {
   double get lat;
   @override
   double get lng;
+  @override
+  bool get isTracking;
   @override
   @JsonKey(ignore: true)
   _$$MetroImplCopyWith<_$MetroImpl> get copyWith =>

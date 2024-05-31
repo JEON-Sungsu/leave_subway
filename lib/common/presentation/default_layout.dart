@@ -17,17 +17,16 @@ class DefaultLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: renderAppBar(),
-        body: child,
-        drawer: isNested! ? null : CustomDrawer(),
-      ),
+    return Scaffold(
+      appBar: renderAppBar(),
+      body: child,
+      drawer: isNested! ? null : CustomDrawer(),
     );
   }
 
   AppBar? renderAppBar() {
     return AppBar(
+      centerTitle: true,
       title: Text(
         title,
         style: const TextStyle(
@@ -49,6 +48,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
     final subtitleStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w600,
@@ -65,7 +65,7 @@ class CustomDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
+            padding: EdgeInsets.fromLTRB(16, topPadding, 0, 16),
             decoration: BoxDecoration(
               color: PRIMARY_COLOR,
             ),
@@ -94,72 +94,72 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: ListView(
-                children: [
-                  Text(
-                    '도시별 지하철',
-                    style: subtitleStyle,
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              children: [
+                Text(
+                  '도시별 지하철',
+                  style: subtitleStyle,
+                ),
+                SizedBox(height: 16),
+                ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  title: Text(
+                    '· 수도권',
+                    style: subtitleStyle.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(height: 16),
-                  ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
-                    title: Text(
-                      '· 수도권',
-                      style: subtitleStyle.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                SizedBox(height: 24),
+                Text(
+                  '어플리케이션 정보',
+                  style: subtitleStyle,
+                ),
+                SizedBox(height: 16),
+                ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  title: Text(
+                    '· 이용 가이드',
+                    style: subtitleStyle.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(height: 24),
-                  Text(
-                    '어플리케이션 정보',
-                    style: subtitleStyle,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  title: Text(
+                    '· 개인정보 처리 방침',
+                    style: subtitleStyle.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(height: 16),
-                  ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
-                    title: Text(
-                      '· 이용 가이드',
-                      style: subtitleStyle.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  title: Text(
+                    '· 오픈소스 라이센스',
+                    style: subtitleStyle.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
-                  ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
-                    title: Text(
-                      '· 개인정보 처리 방침',
-                      style: subtitleStyle.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
-                    title: Text(
-                      '· 오픈소스 라이센스',
-                      style: subtitleStyle.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             ),
           ),
         ],

@@ -11,7 +11,8 @@ class Metro with _$Metro {
     required String name,
     required num? code,
     required double lat,
-    required double lng
+    required double lng,
+    @Default(false) bool isTracking,
   }) = _Metro;
 
   factory Metro.fromJson(Map<String, Object?> json) => _$MetroFromJson(json);

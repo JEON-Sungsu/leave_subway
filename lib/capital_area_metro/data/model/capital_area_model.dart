@@ -9,9 +9,11 @@ part 'capital_area_model.g.dart';
 @freezed
 class CapitalAreaModel with _$CapitalAreaModel {
   const factory CapitalAreaModel({
-    @Default({}) Set<String> lineNames,
+    @Default([]) List<String> lineNames,
     @Default([]) List<Metro> metros,
-    @Default([]) List<DestinationListModel> destinations,
+    @Default([]) List<Metro> selectedMetros,
+    @Default('') String currentStation,
+    @Default([]) List<Metro> destinations,
   }) = _CapitalAreaModel;
 
   factory CapitalAreaModel.fromJson(Map<String, Object?> json) => _$CapitalAreaModelFromJson(json);

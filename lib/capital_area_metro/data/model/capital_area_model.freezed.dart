@@ -20,10 +20,11 @@ CapitalAreaModel _$CapitalAreaModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CapitalAreaModel {
-  Set<String> get lineNames => throw _privateConstructorUsedError;
+  List<String> get lineNames => throw _privateConstructorUsedError;
   List<Metro> get metros => throw _privateConstructorUsedError;
-  List<DestinationListModel> get destinations =>
-      throw _privateConstructorUsedError;
+  List<Metro> get selectedMetros => throw _privateConstructorUsedError;
+  String get currentStation => throw _privateConstructorUsedError;
+  List<Metro> get destinations => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,9 +39,11 @@ abstract class $CapitalAreaModelCopyWith<$Res> {
       _$CapitalAreaModelCopyWithImpl<$Res, CapitalAreaModel>;
   @useResult
   $Res call(
-      {Set<String> lineNames,
+      {List<String> lineNames,
       List<Metro> metros,
-      List<DestinationListModel> destinations});
+      List<Metro> selectedMetros,
+      String currentStation,
+      List<Metro> destinations});
 }
 
 /// @nodoc
@@ -58,21 +61,31 @@ class _$CapitalAreaModelCopyWithImpl<$Res, $Val extends CapitalAreaModel>
   $Res call({
     Object? lineNames = null,
     Object? metros = null,
+    Object? selectedMetros = null,
+    Object? currentStation = null,
     Object? destinations = null,
   }) {
     return _then(_value.copyWith(
       lineNames: null == lineNames
           ? _value.lineNames
           : lineNames // ignore: cast_nullable_to_non_nullable
-              as Set<String>,
+              as List<String>,
       metros: null == metros
           ? _value.metros
           : metros // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
+      selectedMetros: null == selectedMetros
+          ? _value.selectedMetros
+          : selectedMetros // ignore: cast_nullable_to_non_nullable
+              as List<Metro>,
+      currentStation: null == currentStation
+          ? _value.currentStation
+          : currentStation // ignore: cast_nullable_to_non_nullable
+              as String,
       destinations: null == destinations
           ? _value.destinations
           : destinations // ignore: cast_nullable_to_non_nullable
-              as List<DestinationListModel>,
+              as List<Metro>,
     ) as $Val);
   }
 }
@@ -86,9 +99,11 @@ abstract class _$$CapitalAreaModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Set<String> lineNames,
+      {List<String> lineNames,
       List<Metro> metros,
-      List<DestinationListModel> destinations});
+      List<Metro> selectedMetros,
+      String currentStation,
+      List<Metro> destinations});
 }
 
 /// @nodoc
@@ -104,21 +119,31 @@ class __$$CapitalAreaModelImplCopyWithImpl<$Res>
   $Res call({
     Object? lineNames = null,
     Object? metros = null,
+    Object? selectedMetros = null,
+    Object? currentStation = null,
     Object? destinations = null,
   }) {
     return _then(_$CapitalAreaModelImpl(
       lineNames: null == lineNames
           ? _value._lineNames
           : lineNames // ignore: cast_nullable_to_non_nullable
-              as Set<String>,
+              as List<String>,
       metros: null == metros
           ? _value._metros
           : metros // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
+      selectedMetros: null == selectedMetros
+          ? _value._selectedMetros
+          : selectedMetros // ignore: cast_nullable_to_non_nullable
+              as List<Metro>,
+      currentStation: null == currentStation
+          ? _value.currentStation
+          : currentStation // ignore: cast_nullable_to_non_nullable
+              as String,
       destinations: null == destinations
           ? _value._destinations
           : destinations // ignore: cast_nullable_to_non_nullable
-              as List<DestinationListModel>,
+              as List<Metro>,
     ));
   }
 }
@@ -127,23 +152,26 @@ class __$$CapitalAreaModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CapitalAreaModelImpl implements _CapitalAreaModel {
   const _$CapitalAreaModelImpl(
-      {final Set<String> lineNames = const {},
+      {final List<String> lineNames = const [],
       final List<Metro> metros = const [],
-      final List<DestinationListModel> destinations = const []})
+      final List<Metro> selectedMetros = const [],
+      this.currentStation = '',
+      final List<Metro> destinations = const []})
       : _lineNames = lineNames,
         _metros = metros,
+        _selectedMetros = selectedMetros,
         _destinations = destinations;
 
   factory _$CapitalAreaModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CapitalAreaModelImplFromJson(json);
 
-  final Set<String> _lineNames;
+  final List<String> _lineNames;
   @override
   @JsonKey()
-  Set<String> get lineNames {
-    if (_lineNames is EqualUnmodifiableSetView) return _lineNames;
+  List<String> get lineNames {
+    if (_lineNames is EqualUnmodifiableListView) return _lineNames;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableSetView(_lineNames);
+    return EqualUnmodifiableListView(_lineNames);
   }
 
   final List<Metro> _metros;
@@ -155,10 +183,22 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
     return EqualUnmodifiableListView(_metros);
   }
 
-  final List<DestinationListModel> _destinations;
+  final List<Metro> _selectedMetros;
   @override
   @JsonKey()
-  List<DestinationListModel> get destinations {
+  List<Metro> get selectedMetros {
+    if (_selectedMetros is EqualUnmodifiableListView) return _selectedMetros;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_selectedMetros);
+  }
+
+  @override
+  @JsonKey()
+  final String currentStation;
+  final List<Metro> _destinations;
+  @override
+  @JsonKey()
+  List<Metro> get destinations {
     if (_destinations is EqualUnmodifiableListView) return _destinations;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_destinations);
@@ -166,7 +206,7 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
 
   @override
   String toString() {
-    return 'CapitalAreaModel(lineNames: $lineNames, metros: $metros, destinations: $destinations)';
+    return 'CapitalAreaModel(lineNames: $lineNames, metros: $metros, selectedMetros: $selectedMetros, currentStation: $currentStation, destinations: $destinations)';
   }
 
   @override
@@ -178,6 +218,10 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
                 .equals(other._lineNames, _lineNames) &&
             const DeepCollectionEquality().equals(other._metros, _metros) &&
             const DeepCollectionEquality()
+                .equals(other._selectedMetros, _selectedMetros) &&
+            (identical(other.currentStation, currentStation) ||
+                other.currentStation == currentStation) &&
+            const DeepCollectionEquality()
                 .equals(other._destinations, _destinations));
   }
 
@@ -187,6 +231,8 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
       runtimeType,
       const DeepCollectionEquality().hash(_lineNames),
       const DeepCollectionEquality().hash(_metros),
+      const DeepCollectionEquality().hash(_selectedMetros),
+      currentStation,
       const DeepCollectionEquality().hash(_destinations));
 
   @JsonKey(ignore: true)
@@ -206,19 +252,25 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
 
 abstract class _CapitalAreaModel implements CapitalAreaModel {
   const factory _CapitalAreaModel(
-      {final Set<String> lineNames,
+      {final List<String> lineNames,
       final List<Metro> metros,
-      final List<DestinationListModel> destinations}) = _$CapitalAreaModelImpl;
+      final List<Metro> selectedMetros,
+      final String currentStation,
+      final List<Metro> destinations}) = _$CapitalAreaModelImpl;
 
   factory _CapitalAreaModel.fromJson(Map<String, dynamic> json) =
       _$CapitalAreaModelImpl.fromJson;
 
   @override
-  Set<String> get lineNames;
+  List<String> get lineNames;
   @override
   List<Metro> get metros;
   @override
-  List<DestinationListModel> get destinations;
+  List<Metro> get selectedMetros;
+  @override
+  String get currentStation;
+  @override
+  List<Metro> get destinations;
   @override
   @JsonKey(ignore: true)
   _$$CapitalAreaModelImplCopyWith<_$CapitalAreaModelImpl> get copyWith =>

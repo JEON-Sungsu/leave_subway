@@ -11,7 +11,7 @@ class CapitalAreaMetroDataSource {
   Future<List<Metro>> getMetroList() async {
     final stringData = await rootBundle.loadString('asset/json/station_coordinate.json');
     final jsonString = jsonDecode(stringData) as List;
-    final List<Metro> metroList = jsonString.map((e) => Metro.fromJson(e)).toList();
+    final List<Metro> metroList = jsonString.map((e) => Metro.fromDataSource(e)).toList();
 
     return metroList;
   }

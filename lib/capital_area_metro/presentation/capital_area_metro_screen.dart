@@ -1,15 +1,20 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
+import 'package:leave_subway/common/const/color.dart';
 import 'package:leave_subway/common/presentation/bottom_sheet.dart';
 import 'package:leave_subway/common/presentation/default_layout.dart';
 import 'package:leave_subway/core/permission/permission_manager.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_alert.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_denied.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CapitalAreaMetroScreen extends ConsumerStatefulWidget {
   const CapitalAreaMetroScreen({super.key});
@@ -52,9 +57,7 @@ class _CapitalAreaMetroScreenState
       title: '내리라',
       action: IconButton(
         onPressed: () {
-          ref
-              .read(capitalAreaMetroScreenProvider.notifier)
-              .initializeScroll();
+          ref.read(capitalAreaMetroScreenProvider.notifier).initializeScroll();
           showModalBottomSheet(
             context: context,
             builder: (context) {
@@ -111,11 +114,16 @@ class _CapitalAreaMetroScreenState
                   child: ListView.separated(
                     itemCount: state.destinations.length,
                     itemBuilder: (_, index) {
-                      return Text(state.destinations[index].toString());
+                      final model = state.destinations[index];
+                      return _renderDestinationList(model: model);
                     },
                     separatorBuilder: (_, index) {
-                      return const SizedBox(
-                        height: 16,
+                      return SizedBox(
+                        height: 16.0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Divider(),
+                        ),
                       );
                     },
                   ),
@@ -133,6 +141,70 @@ class _CapitalAreaMetroScreenState
       builder: (context) {
         return PermissionAlert();
       },
+    );
+  }
+
+  Padding _renderDestinationList({required Metro model}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                model.line,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                model.name,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: model.isTracking ? PRIMARY_COLOR : Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          if (model.isTracking)
+            Expanded(
+              child: Shimmer.fromColors(
+                baseColor: PRIMARY_COLOR,
+                highlightColor: Colors.white,
+                child: const Text(
+                  '추적중 ········',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            )
+          else
+            Spacer(),
+          CupertinoSwitch(
+            value: model.isTracking,
+            onChanged: (value) {
+              ref
+                  .read(capitalAreaMetroScreenProvider.notifier)
+                  .toggleTracking(model.id);
+            },
+          ),
+          IconButton(
+              onPressed: () {
+                ref
+                    .read(capitalAreaMetroScreenProvider.notifier)
+                    .deleteDestination(model.id);
+              },
+              icon: Icon(
+                Icons.close,
+                size: 16.0,
+              ))
+        ],
+      ),
     );
   }
 }

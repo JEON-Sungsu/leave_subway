@@ -7,6 +7,7 @@ part of 'metro.dart';
 // **************************************************************************
 
 _$MetroImpl _$$MetroImplFromJson(Map<String, dynamic> json) => _$MetroImpl(
+      id: json['id'] as String,
       line: json['line'] as String,
       name: json['name'] as String,
       code: json['code'] as num?,
@@ -17,6 +18,7 @@ _$MetroImpl _$$MetroImplFromJson(Map<String, dynamic> json) => _$MetroImpl(
 
 Map<String, dynamic> _$$MetroImplToJson(_$MetroImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'line': instance.line,
       'name': instance.name,
       'code': instance.code,

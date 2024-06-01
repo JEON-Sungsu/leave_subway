@@ -17,7 +17,7 @@ class DestinationBottomSheet extends ConsumerStatefulWidget {
 class _DestinationBottomSheetState
     extends ConsumerState<DestinationBottomSheet> {
   Timer? _timer;
-  final ScrollController _stationScrollController = ScrollController();
+  final FixedExtentScrollController _stationScrollController = FixedExtentScrollController(initialItem: 0);
 
   void _onScroll(int value, Function(int) onChangeValue) async {
     _timer?.cancel();
@@ -35,7 +35,6 @@ class _DestinationBottomSheetState
     final state = ref.watch(capitalAreaMetroScreenProvider);
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-
     return Container(
       height: deviceHeight * 0.5,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
@@ -122,7 +121,7 @@ class _DestinationBottomSheetState
   SizedBox _renderWheelScroll(
       {required double width,
       required double height,
-      ScrollController? controller,
+      FixedExtentScrollController? controller,
       required List<String> listItem,
       required ValueChanged<int> callBack}) {
     return SizedBox(
@@ -139,7 +138,7 @@ class _DestinationBottomSheetState
         useMagnifier: true,
         overAndUnderCenterOpacity: 0.7,
         magnification: 1.2,
-        // physics: const FixedExtentScrollPhysics(),
+        physics: ScrollPhysics(),
         children: listItem.map((e) => Text(e)).toList(),
       ),
     );

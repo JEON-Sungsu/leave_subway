@@ -20,6 +20,7 @@ Metro _$MetroFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Metro {
+  String get id => throw _privateConstructorUsedError;
   String get line => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   num? get code => throw _privateConstructorUsedError;
@@ -38,7 +39,8 @@ abstract class $MetroCopyWith<$Res> {
       _$MetroCopyWithImpl<$Res, Metro>;
   @useResult
   $Res call(
-      {String line,
+      {String id,
+      String line,
       String name,
       num? code,
       double lat,
@@ -59,6 +61,7 @@ class _$MetroCopyWithImpl<$Res, $Val extends Metro>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? line = null,
     Object? name = null,
     Object? code = freezed,
@@ -67,6 +70,10 @@ class _$MetroCopyWithImpl<$Res, $Val extends Metro>
     Object? isTracking = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       line: null == line
           ? _value.line
           : line // ignore: cast_nullable_to_non_nullable
@@ -103,7 +110,8 @@ abstract class _$$MetroImplCopyWith<$Res> implements $MetroCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String line,
+      {String id,
+      String line,
       String name,
       num? code,
       double lat,
@@ -122,6 +130,7 @@ class __$$MetroImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? line = null,
     Object? name = null,
     Object? code = freezed,
@@ -130,6 +139,10 @@ class __$$MetroImplCopyWithImpl<$Res>
     Object? isTracking = null,
   }) {
     return _then(_$MetroImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       line: null == line
           ? _value.line
           : line // ignore: cast_nullable_to_non_nullable
@@ -162,7 +175,8 @@ class __$$MetroImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MetroImpl implements _Metro {
   const _$MetroImpl(
-      {required this.line,
+      {required this.id,
+      required this.line,
       required this.name,
       required this.code,
       required this.lat,
@@ -172,6 +186,8 @@ class _$MetroImpl implements _Metro {
   factory _$MetroImpl.fromJson(Map<String, dynamic> json) =>
       _$$MetroImplFromJson(json);
 
+  @override
+  final String id;
   @override
   final String line;
   @override
@@ -188,7 +204,7 @@ class _$MetroImpl implements _Metro {
 
   @override
   String toString() {
-    return 'Metro(line: $line, name: $name, code: $code, lat: $lat, lng: $lng, isTracking: $isTracking)';
+    return 'Metro(id: $id, line: $line, name: $name, code: $code, lat: $lat, lng: $lng, isTracking: $isTracking)';
   }
 
   @override
@@ -196,6 +212,7 @@ class _$MetroImpl implements _Metro {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MetroImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.line, line) || other.line == line) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.code, code) || other.code == code) &&
@@ -208,7 +225,7 @@ class _$MetroImpl implements _Metro {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, line, name, code, lat, lng, isTracking);
+      Object.hash(runtimeType, id, line, name, code, lat, lng, isTracking);
 
   @JsonKey(ignore: true)
   @override
@@ -226,7 +243,8 @@ class _$MetroImpl implements _Metro {
 
 abstract class _Metro implements Metro {
   const factory _Metro(
-      {required final String line,
+      {required final String id,
+      required final String line,
       required final String name,
       required final num? code,
       required final double lat,
@@ -235,6 +253,8 @@ abstract class _Metro implements Metro {
 
   factory _Metro.fromJson(Map<String, dynamic> json) = _$MetroImpl.fromJson;
 
+  @override
+  String get id;
   @override
   String get line;
   @override

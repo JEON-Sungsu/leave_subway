@@ -18,6 +18,7 @@ class DefaultLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: renderAppBar(),
       body: child,
       drawer: isNested! ? null : CustomDrawer(),
@@ -26,6 +27,7 @@ class DefaultLayout extends StatelessWidget {
 
   AppBar? renderAppBar() {
     return AppBar(
+      backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(
         title,

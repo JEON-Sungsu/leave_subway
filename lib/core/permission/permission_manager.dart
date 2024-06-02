@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum CombinedPermissionStatus {
@@ -9,7 +10,7 @@ enum CombinedPermissionStatus {
   allGranted,
 }
 
-class PermissionManager with ChangeNotifier {
+class PermissionManager {
   //위치 권한 요청
   Future<void> requestLocationPermission() async {
     if (await Permission.locationWhenInUse.serviceStatus.isDisabled) {

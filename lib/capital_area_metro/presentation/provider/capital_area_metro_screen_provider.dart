@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/capital_area_metro/data/model/capital_area_model.dart';
 import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
@@ -19,7 +20,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   MetroListRepository repository;
 
   CapitalAreaMetroScreenNotifier({required this.repository})
-      : super(CapitalAreaModel()) {
+      : super(CapitalAreaModel(isLoading: true)) {
     _initState();
   }
 
@@ -27,8 +28,9 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     List<Metro> destinations = [];
     final metroData = await repository.getMetroList();
     final lines = metroData.map((e) => e.line).toSet();
+
     final sharedPref = await SharedPreferences.getInstance();
-    sharedPref.remove('capitalDestination');
+    // sharedPref.remove('capitalDestination');
     final savedList = sharedPref.getStringList('capitalDestination');
     if (savedList != null) {
       final jsonString =
@@ -37,9 +39,11 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     }
 
     state = state.copyWith(
-        lineNames: lines.toList(),
-        metros: metroData,
-        destinations: destinations);
+      lineNames: lines.toList(),
+      wholeMetros: metroData,
+      destinations: destinations,
+      isLoading: false,
+    );
   }
 
   void initializeScroll() {
@@ -47,16 +51,18 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   }
 
   void setStationNames(String lineName) async {
-    final metroList = state.metros.where((e) => e.line == lineName).toList();
-    final currentStation = metroList.first.name;
+    final sortedMetroByLine =
+        state.wholeMetros.where((e) => e.line == lineName).toList();
+    final selectedStation = sortedMetroByLine.first.name;
+
     state = state.copyWith(
-      selectedMetros: metroList,
-      currentStation: currentStation,
+      sortedMetroByLine: sortedMetroByLine,
+      selectedStation: selectedStation,
     );
   }
 
   void setCurrentStation(String stationName) {
-    state = state.copyWith(currentStation: stationName);
+    state = state.copyWith(selectedStation: stationName);
   }
 
   void addDestinations(String stationName) async {
@@ -67,7 +73,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     }
 
     final destination =
-        state.selectedMetros.where((e) => e.name == stationName).toList();
+        state.sortedMetroByLine.where((e) => e.name == stationName).toList();
     state =
         state.copyWith(destinations: [...state.destinations, ...destination]);
 
@@ -88,8 +94,9 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     final isOtherTracking =
         state.destinations.any((e) => e.isTracking == true && e.id != id);
 
-    //TODO: 사용자에게 추적중인거 종료하고 켜라고 해야될듯 - 여기서 저거뭐야 스낵바 띄우는게 가능한가
     if (isOtherTracking) {
+      state = state.copyWith(isOtherTracking: true);
+
       return;
     }
 
@@ -100,7 +107,9 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
             .map((e) => e.id == id
                 ? currentDestination.copyWith(isTracking: !e.isTracking)
                 : e)
-            .toList());
+            .toList(),
+        isOtherTracking: false,
+    );
   }
 
   void deleteDestination(String id) async {
@@ -108,19 +117,17 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     state = state.copyWith(destinations: pState);
 
     final sharedPref = await SharedPreferences.getInstance();
-    final savedList = sharedPref.getStringList('capitalDestination');
+    final List<String>? savedList =
+        sharedPref.getStringList('capitalDestination');
     if (savedList != null) {
       final jsonString =
           savedList.map((e) => jsonDecode(e) as Map<String, dynamic>).toList();
       final newData = jsonString
-          .where((element) => element['id'] != id)
-          .toList()
-          .map((e) => Metro.fromSharedPref(e))
-          .toList()
-          .map((e) => e.toJson())
+          .where((metro) => metro['id'] != id)
+          .map((e) => Metro.fromSharedPref(e).toJson())
           .toList();
-      await sharedPref.setStringList(
-          'capitalDestination', <String>[jsonEncode(newData)]);
+      await sharedPref.setStringList('capitalDestination',
+          <String>[...newData.map((e) => jsonEncode(e)).toList()]);
     }
   }
 }

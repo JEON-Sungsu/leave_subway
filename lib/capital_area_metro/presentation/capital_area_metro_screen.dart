@@ -53,6 +53,16 @@ class _CapitalAreaMetroScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(capitalAreaMetroScreenProvider);
+
+    ref.listen(capitalAreaMetroScreenProvider, (_, state) {
+      if (state.isOtherTracking) {
+        final snackBar = SnackBar(
+          content: Text('현재 추적중인 목적지의 추적 종료 후 실행해주세요.'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    });
+
     return DefaultLayout(
       title: '내리라',
       action: IconButton(
@@ -98,7 +108,11 @@ class _CapitalAreaMetroScreenState
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (state.destinations.isEmpty)
+              if (state.isLoading)
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              if (state.destinations.isEmpty && !state.isLoading)
                 Center(
                   child: Text(
                     '등록된 목적지가 존재하지 않습니다.\n 목적지를 등록해주세요.',

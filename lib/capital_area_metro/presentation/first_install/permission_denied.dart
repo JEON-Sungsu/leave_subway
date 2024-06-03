@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:leave_subway/common/const/ui_style.dart';
-import 'package:leave_subway/core/permission/permission_manager.dart';
+import 'package:leave_subway/common/permission/permission_manager.dart';
 
 class PermissionDenied extends StatefulWidget {
   final CombinedPermissionStatus _permission;

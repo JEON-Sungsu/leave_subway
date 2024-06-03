@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
+import 'package:leave_subway/capital_area_metro/domain/model/metro.dart';
 
 final metroListProvider = Provider<CapitalAreaMetroDataSource>((ref) => CapitalAreaMetroDataSource());
 

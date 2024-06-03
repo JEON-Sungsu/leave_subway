@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
+import 'package:leave_subway/capital_area_metro/domain/model/metro.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
 import 'package:leave_subway/common/const/color.dart';
+import 'package:leave_subway/common/permission/permission_manager.dart';
 import 'package:leave_subway/common/presentation/bottom_sheet.dart';
 import 'package:leave_subway/common/presentation/default_layout.dart';
-import 'package:leave_subway/core/permission/permission_manager.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_alert.dart';
 import 'package:leave_subway/capital_area_metro/presentation/first_install/permission_denied.dart';
-import 'package:lottie/lottie.dart';
+import 'package:leave_subway/service/location_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -221,6 +221,33 @@ class _CapitalAreaMetroScreenState
               ref
                   .read(capitalAreaMetroScreenProvider.notifier)
                   .toggleTracking(model.id);
+              if (value) {
+                _positionStreamSubscription = getStartLocationSubscription(model.lat, model.lng);
+                _positionStreamSubscription.onData(
+                  (data) {
+                    print(
+                        '현재 위치 - 위도: ${data.latitude}, 경도: ${data.longitude}');
+                    print(
+                        '목적지 - 위도: ${model.lat}, 경도: ${model.lng}');
+                    final distanceInMeters = Geolocator.distanceBetween(
+                        data.latitude, data.longitude, model.lat, model.lng);
+                    print('남은 거리: $distanceInMeters');
+                    switch (distanceInMeters) {
+                      case <= 500:
+                        print('목적지 도착 약 1분전');
+                        print('위치추적을 종료합니다.');
+                        ref
+                            .read(capitalAreaMetroScreenProvider.notifier)
+                            .toggleTracking(model.id);
+                        _positionStreamSubscription.cancel();
+                      case <= 1000:
+                        print('목적지 도착 약 3분전');
+                    }
+                  },
+                );
+              } else {
+                _positionStreamSubscription.cancel();
+              }
             },
           ),
           IconButton(

@@ -6,13 +6,15 @@ part 'capital_area_model.freezed.dart';
 part 'capital_area_model.g.dart';
 
 @freezed
-class CapitalAreaModel with _$CapitalAreaModel {
+class CapitalAreaModel with _$CapitalAreaModel{
   const factory CapitalAreaModel({
     @Default([]) List<String> lineNames,
-    @Default([]) List<Metro> metros,
-    @Default([]) List<Metro> selectedMetros,
-    @Default('') String currentStation,
+    @Default([]) List<Metro> wholeMetros,
+    @Default([]) List<Metro> sortedMetroByLine,
+    @Default('') String selectedStation,
     @Default([]) List<Metro> destinations,
+    @Default(false) bool isLoading,
+    @Default(false) bool isOtherTracking,
   }) = _CapitalAreaModel;
 
   factory CapitalAreaModel.fromJson(Map<String, Object?> json) => _$CapitalAreaModelFromJson(json);

@@ -13,27 +13,31 @@ _$CapitalAreaModelImpl _$$CapitalAreaModelImplFromJson(
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      metros: (json['metros'] as List<dynamic>?)
+      wholeMetros: (json['wholeMetros'] as List<dynamic>?)
               ?.map((e) => Metro.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      selectedMetros: (json['selectedMetros'] as List<dynamic>?)
+      sortedMetroByLine: (json['sortedMetroByLine'] as List<dynamic>?)
               ?.map((e) => Metro.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      currentStation: json['currentStation'] as String? ?? '',
+      selectedStation: json['selectedStation'] as String? ?? '',
       destinations: (json['destinations'] as List<dynamic>?)
               ?.map((e) => Metro.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      isLoading: json['isLoading'] as bool? ?? false,
+      isOtherTracking: json['isOtherTracking'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$CapitalAreaModelImplToJson(
         _$CapitalAreaModelImpl instance) =>
     <String, dynamic>{
       'lineNames': instance.lineNames,
-      'metros': instance.metros,
-      'selectedMetros': instance.selectedMetros,
-      'currentStation': instance.currentStation,
+      'wholeMetros': instance.wholeMetros,
+      'sortedMetroByLine': instance.sortedMetroByLine,
+      'selectedStation': instance.selectedStation,
       'destinations': instance.destinations,
+      'isLoading': instance.isLoading,
+      'isOtherTracking': instance.isOtherTracking,
     };

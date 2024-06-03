@@ -21,10 +21,12 @@ CapitalAreaModel _$CapitalAreaModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CapitalAreaModel {
   List<String> get lineNames => throw _privateConstructorUsedError;
-  List<Metro> get metros => throw _privateConstructorUsedError;
-  List<Metro> get selectedMetros => throw _privateConstructorUsedError;
-  String get currentStation => throw _privateConstructorUsedError;
+  List<Metro> get wholeMetros => throw _privateConstructorUsedError;
+  List<Metro> get sortedMetroByLine => throw _privateConstructorUsedError;
+  String get selectedStation => throw _privateConstructorUsedError;
   List<Metro> get destinations => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isOtherTracking => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,10 +42,12 @@ abstract class $CapitalAreaModelCopyWith<$Res> {
   @useResult
   $Res call(
       {List<String> lineNames,
-      List<Metro> metros,
-      List<Metro> selectedMetros,
-      String currentStation,
-      List<Metro> destinations});
+      List<Metro> wholeMetros,
+      List<Metro> sortedMetroByLine,
+      String selectedStation,
+      List<Metro> destinations,
+      bool isLoading,
+      bool isOtherTracking});
 }
 
 /// @nodoc
@@ -60,32 +64,42 @@ class _$CapitalAreaModelCopyWithImpl<$Res, $Val extends CapitalAreaModel>
   @override
   $Res call({
     Object? lineNames = null,
-    Object? metros = null,
-    Object? selectedMetros = null,
-    Object? currentStation = null,
+    Object? wholeMetros = null,
+    Object? sortedMetroByLine = null,
+    Object? selectedStation = null,
     Object? destinations = null,
+    Object? isLoading = null,
+    Object? isOtherTracking = null,
   }) {
     return _then(_value.copyWith(
       lineNames: null == lineNames
           ? _value.lineNames
           : lineNames // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      metros: null == metros
-          ? _value.metros
-          : metros // ignore: cast_nullable_to_non_nullable
+      wholeMetros: null == wholeMetros
+          ? _value.wholeMetros
+          : wholeMetros // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
-      selectedMetros: null == selectedMetros
-          ? _value.selectedMetros
-          : selectedMetros // ignore: cast_nullable_to_non_nullable
+      sortedMetroByLine: null == sortedMetroByLine
+          ? _value.sortedMetroByLine
+          : sortedMetroByLine // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
-      currentStation: null == currentStation
-          ? _value.currentStation
-          : currentStation // ignore: cast_nullable_to_non_nullable
+      selectedStation: null == selectedStation
+          ? _value.selectedStation
+          : selectedStation // ignore: cast_nullable_to_non_nullable
               as String,
       destinations: null == destinations
           ? _value.destinations
           : destinations // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOtherTracking: null == isOtherTracking
+          ? _value.isOtherTracking
+          : isOtherTracking // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -100,10 +114,12 @@ abstract class _$$CapitalAreaModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<String> lineNames,
-      List<Metro> metros,
-      List<Metro> selectedMetros,
-      String currentStation,
-      List<Metro> destinations});
+      List<Metro> wholeMetros,
+      List<Metro> sortedMetroByLine,
+      String selectedStation,
+      List<Metro> destinations,
+      bool isLoading,
+      bool isOtherTracking});
 }
 
 /// @nodoc
@@ -118,32 +134,42 @@ class __$$CapitalAreaModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? lineNames = null,
-    Object? metros = null,
-    Object? selectedMetros = null,
-    Object? currentStation = null,
+    Object? wholeMetros = null,
+    Object? sortedMetroByLine = null,
+    Object? selectedStation = null,
     Object? destinations = null,
+    Object? isLoading = null,
+    Object? isOtherTracking = null,
   }) {
     return _then(_$CapitalAreaModelImpl(
       lineNames: null == lineNames
           ? _value._lineNames
           : lineNames // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      metros: null == metros
-          ? _value._metros
-          : metros // ignore: cast_nullable_to_non_nullable
+      wholeMetros: null == wholeMetros
+          ? _value._wholeMetros
+          : wholeMetros // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
-      selectedMetros: null == selectedMetros
-          ? _value._selectedMetros
-          : selectedMetros // ignore: cast_nullable_to_non_nullable
+      sortedMetroByLine: null == sortedMetroByLine
+          ? _value._sortedMetroByLine
+          : sortedMetroByLine // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
-      currentStation: null == currentStation
-          ? _value.currentStation
-          : currentStation // ignore: cast_nullable_to_non_nullable
+      selectedStation: null == selectedStation
+          ? _value.selectedStation
+          : selectedStation // ignore: cast_nullable_to_non_nullable
               as String,
       destinations: null == destinations
           ? _value._destinations
           : destinations // ignore: cast_nullable_to_non_nullable
               as List<Metro>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOtherTracking: null == isOtherTracking
+          ? _value.isOtherTracking
+          : isOtherTracking // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -153,13 +179,15 @@ class __$$CapitalAreaModelImplCopyWithImpl<$Res>
 class _$CapitalAreaModelImpl implements _CapitalAreaModel {
   const _$CapitalAreaModelImpl(
       {final List<String> lineNames = const [],
-      final List<Metro> metros = const [],
-      final List<Metro> selectedMetros = const [],
-      this.currentStation = '',
-      final List<Metro> destinations = const []})
+      final List<Metro> wholeMetros = const [],
+      final List<Metro> sortedMetroByLine = const [],
+      this.selectedStation = '',
+      final List<Metro> destinations = const [],
+      this.isLoading = false,
+      this.isOtherTracking = false})
       : _lineNames = lineNames,
-        _metros = metros,
-        _selectedMetros = selectedMetros,
+        _wholeMetros = wholeMetros,
+        _sortedMetroByLine = sortedMetroByLine,
         _destinations = destinations;
 
   factory _$CapitalAreaModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -174,27 +202,28 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
     return EqualUnmodifiableListView(_lineNames);
   }
 
-  final List<Metro> _metros;
+  final List<Metro> _wholeMetros;
   @override
   @JsonKey()
-  List<Metro> get metros {
-    if (_metros is EqualUnmodifiableListView) return _metros;
+  List<Metro> get wholeMetros {
+    if (_wholeMetros is EqualUnmodifiableListView) return _wholeMetros;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_metros);
+    return EqualUnmodifiableListView(_wholeMetros);
   }
 
-  final List<Metro> _selectedMetros;
+  final List<Metro> _sortedMetroByLine;
   @override
   @JsonKey()
-  List<Metro> get selectedMetros {
-    if (_selectedMetros is EqualUnmodifiableListView) return _selectedMetros;
+  List<Metro> get sortedMetroByLine {
+    if (_sortedMetroByLine is EqualUnmodifiableListView)
+      return _sortedMetroByLine;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_selectedMetros);
+    return EqualUnmodifiableListView(_sortedMetroByLine);
   }
 
   @override
   @JsonKey()
-  final String currentStation;
+  final String selectedStation;
   final List<Metro> _destinations;
   @override
   @JsonKey()
@@ -205,8 +234,15 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
   }
 
   @override
+  @JsonKey()
+  final bool isLoading;
+  @override
+  @JsonKey()
+  final bool isOtherTracking;
+
+  @override
   String toString() {
-    return 'CapitalAreaModel(lineNames: $lineNames, metros: $metros, selectedMetros: $selectedMetros, currentStation: $currentStation, destinations: $destinations)';
+    return 'CapitalAreaModel(lineNames: $lineNames, wholeMetros: $wholeMetros, sortedMetroByLine: $sortedMetroByLine, selectedStation: $selectedStation, destinations: $destinations, isLoading: $isLoading, isOtherTracking: $isOtherTracking)';
   }
 
   @override
@@ -216,13 +252,18 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
             other is _$CapitalAreaModelImpl &&
             const DeepCollectionEquality()
                 .equals(other._lineNames, _lineNames) &&
-            const DeepCollectionEquality().equals(other._metros, _metros) &&
             const DeepCollectionEquality()
-                .equals(other._selectedMetros, _selectedMetros) &&
-            (identical(other.currentStation, currentStation) ||
-                other.currentStation == currentStation) &&
+                .equals(other._wholeMetros, _wholeMetros) &&
             const DeepCollectionEquality()
-                .equals(other._destinations, _destinations));
+                .equals(other._sortedMetroByLine, _sortedMetroByLine) &&
+            (identical(other.selectedStation, selectedStation) ||
+                other.selectedStation == selectedStation) &&
+            const DeepCollectionEquality()
+                .equals(other._destinations, _destinations) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading) &&
+            (identical(other.isOtherTracking, isOtherTracking) ||
+                other.isOtherTracking == isOtherTracking));
   }
 
   @JsonKey(ignore: true)
@@ -230,10 +271,12 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_lineNames),
-      const DeepCollectionEquality().hash(_metros),
-      const DeepCollectionEquality().hash(_selectedMetros),
-      currentStation,
-      const DeepCollectionEquality().hash(_destinations));
+      const DeepCollectionEquality().hash(_wholeMetros),
+      const DeepCollectionEquality().hash(_sortedMetroByLine),
+      selectedStation,
+      const DeepCollectionEquality().hash(_destinations),
+      isLoading,
+      isOtherTracking);
 
   @JsonKey(ignore: true)
   @override
@@ -253,10 +296,12 @@ class _$CapitalAreaModelImpl implements _CapitalAreaModel {
 abstract class _CapitalAreaModel implements CapitalAreaModel {
   const factory _CapitalAreaModel(
       {final List<String> lineNames,
-      final List<Metro> metros,
-      final List<Metro> selectedMetros,
-      final String currentStation,
-      final List<Metro> destinations}) = _$CapitalAreaModelImpl;
+      final List<Metro> wholeMetros,
+      final List<Metro> sortedMetroByLine,
+      final String selectedStation,
+      final List<Metro> destinations,
+      final bool isLoading,
+      final bool isOtherTracking}) = _$CapitalAreaModelImpl;
 
   factory _CapitalAreaModel.fromJson(Map<String, dynamic> json) =
       _$CapitalAreaModelImpl.fromJson;
@@ -264,13 +309,17 @@ abstract class _CapitalAreaModel implements CapitalAreaModel {
   @override
   List<String> get lineNames;
   @override
-  List<Metro> get metros;
+  List<Metro> get wholeMetros;
   @override
-  List<Metro> get selectedMetros;
+  List<Metro> get sortedMetroByLine;
   @override
-  String get currentStation;
+  String get selectedStation;
   @override
   List<Metro> get destinations;
+  @override
+  bool get isLoading;
+  @override
+  bool get isOtherTracking;
   @override
   @JsonKey(ignore: true)
   _$$CapitalAreaModelImplCopyWith<_$CapitalAreaModelImpl> get copyWith =>

@@ -28,6 +28,7 @@ class _CapitalAreaMetroScreenState
     extends ConsumerState<CapitalAreaMetroScreen> {
   late StreamSubscription<Position> _positionStreamSubscription;
   final PermissionManager _permissionManager = PermissionManager();
+  bool _isSnackBarShow = false;
 
   @override
   void initState() {
@@ -53,11 +54,36 @@ class _CapitalAreaMetroScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(capitalAreaMetroScreenProvider);
+
+    ref.listen(capitalAreaMetroScreenProvider, (_, state) {
+      if (state.isOtherTracking && !_isSnackBarShow) {
+        final snackBar = SnackBar(
+          content: Text(
+            '현재 추적중인 목적지의 추적 종료 후 실행해주세요.',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          duration: Duration(seconds: 2),
+          onVisible: () {
+            _isSnackBarShow = true;
+          },
+        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar)
+            .closed
+            .then((value) {
+          _isSnackBarShow = false;
+        });
+      }
+    });
+
     return DefaultLayout(
       title: '내리라',
       action: IconButton(
         onPressed: () {
-          ref.read(capitalAreaMetroScreenProvider.notifier).initializeScroll();
+          ref.read(capitalAreaMetroScreenProvider.notifier).initWheelScroll();
           showModalBottomSheet(
             context: context,
             builder: (context) {
@@ -98,7 +124,11 @@ class _CapitalAreaMetroScreenState
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (state.destinations.isEmpty)
+              if (state.isLoading)
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              if (state.destinations.isEmpty && !state.isLoading)
                 Center(
                   child: Text(
                     '등록된 목적지가 존재하지 않습니다.\n 목적지를 등록해주세요.',
@@ -197,7 +227,7 @@ class _CapitalAreaMetroScreenState
               onPressed: () {
                 ref
                     .read(capitalAreaMetroScreenProvider.notifier)
-                    .deleteDestination(model.id);
+                    .removeDestination(model.id);
               },
               icon: Icon(
                 Icons.close,

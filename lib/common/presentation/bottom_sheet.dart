@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:leave_subway/capital_area_metro/data/model/capital_area_model.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
 import 'package:leave_subway/common/const/color.dart';
 
@@ -35,6 +36,8 @@ class _DestinationBottomSheetState
     final state = ref.watch(capitalAreaMetroScreenProvider);
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
+
+    if (state is CapitalAreaModel)
     return Container(
       height: deviceHeight * 0.5,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
@@ -68,7 +71,7 @@ class _DestinationBottomSheetState
                     onPressed: () {
                       ref
                           .read(capitalAreaMetroScreenProvider.notifier)
-                          .addDestinations(state.currentStation);
+                          .addDestinations(state.selectedStation);
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -103,9 +106,9 @@ class _DestinationBottomSheetState
                 width: deviceWidth,
                 height: deviceHeight,
                 controller: _stationScrollController,
-                listItem: state.selectedMetros.map((e) => e.name).toList(),
+                listItem: state.sortedMetroByLine.map((e) => e.name).toList(),
                 callBack: (int index) {
-                  final stationName = state.selectedMetros[index].name;
+                  final stationName = state.sortedMetroByLine[index].name;
                   ref
                       .read(capitalAreaMetroScreenProvider.notifier)
                       .setCurrentStation(stationName);
@@ -116,6 +119,8 @@ class _DestinationBottomSheetState
         ],
       ),
     );
+
+    return Center(child: Text('오류가 발생 하였습니다.'));
   }
 
   SizedBox _renderWheelScroll(

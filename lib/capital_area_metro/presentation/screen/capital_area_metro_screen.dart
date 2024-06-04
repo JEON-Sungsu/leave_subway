@@ -42,39 +42,45 @@ class _CapitalAreaMetroScreenState
     }
   }
 
+  void _showSnackBar(String content) {
+    final snackBar = SnackBar(
+      content: Text(
+        content,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+        ),
+      ),
+      duration: Duration(seconds: 2),
+      onVisible: () {
+        _isSnackBarShow = true;
+      },
+    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(snackBar)
+        .closed
+        .then((value) {
+      _isSnackBarShow = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(capitalAreaMetroScreenProvider);
     final stateRead = ref.read(capitalAreaMetroScreenProvider.notifier);
-    final locationProvider = ref.read(locationServiceProvider.notifier);
+    final locationState = ref.watch(locationServiceProvider);
+    final locationRead = ref.read(locationServiceProvider.notifier);
 
     ref.listen(capitalAreaMetroScreenProvider, (_, state) {
       if (state.isOtherTracking && !_isSnackBarShow) {
-        final snackBar = SnackBar(
-          content: Text(
-            '현재 추적중인 목적지의 추적 종료 후 실행해주세요.',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-          duration: Duration(seconds: 2),
-          onVisible: () {
-            _isSnackBarShow = true;
-          },
-        );
-        ScaffoldMessenger.of(context)
-            .showSnackBar(snackBar)
-            .closed
-            .then((value) {
-          _isSnackBarShow = false;
-        });
+        _showSnackBar('현재 추적중인 목적지의 추적 종료 후 실행해주세요.');
       }
     });
 
     ref.listen(locationServiceProvider, (_, state) {
       if (state.isCancel) {
         stateRead.toggleTracking(_trackingId);
+        print('location listen 메서드: ${state.isCancel}');
       }
     });
 
@@ -155,11 +161,12 @@ class _CapitalAreaMetroScreenState
                         onValueChanged: (value) {
                           _trackingId = model.id;
                           stateRead.toggleTracking(model.id);
+                          final distance = locationState.distanceInMeters;
 
                           if(value) {
-                            locationProvider.getStartLocationSubscription(model.lat, model.lng);
+                            locationRead.getStartLocationSubscription(model.lat, model.lng);
                           } else {
-                            locationProvider.cancelLocationSubscription();
+                            locationRead.cancelLocationSubscription();
                           }
                         },
                       );

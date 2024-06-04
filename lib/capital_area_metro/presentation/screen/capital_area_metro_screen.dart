@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/capital_area_metro/presentation/component/destination_list_item.dart';
@@ -42,39 +41,42 @@ class _CapitalAreaMetroScreenState
     }
   }
 
+  void _showSnackBar(String content) {
+    final snackBar = SnackBar(
+      content: Text(
+        content,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+        ),
+      ),
+      duration: Duration(seconds: 2),
+      onVisible: () {
+        _isSnackBarShow = true;
+      },
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar).closed.then((value) {
+      _isSnackBarShow = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(capitalAreaMetroScreenProvider);
     final stateRead = ref.read(capitalAreaMetroScreenProvider.notifier);
-    final locationProvider = ref.read(locationServiceProvider.notifier);
+    final locationState = ref.watch(locationServiceProvider);
+    final locationRead = ref.read(locationServiceProvider.notifier);
 
     ref.listen(capitalAreaMetroScreenProvider, (_, state) {
       if (state.isOtherTracking && !_isSnackBarShow) {
-        final snackBar = SnackBar(
-          content: Text(
-            '현재 추적중인 목적지의 추적 종료 후 실행해주세요.',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-          duration: Duration(seconds: 2),
-          onVisible: () {
-            _isSnackBarShow = true;
-          },
-        );
-        ScaffoldMessenger.of(context)
-            .showSnackBar(snackBar)
-            .closed
-            .then((value) {
-          _isSnackBarShow = false;
-        });
+        _showSnackBar('현재 추적중인 목적지의 추적 종료 후 실행해주세요.');
       }
     });
 
     ref.listen(locationServiceProvider, (_, state) {
       if (state.isCancel) {
         stateRead.toggleTracking(_trackingId);
+        print('location listen 메서드: ${state.isCancel}');
       }
     });
 
@@ -83,7 +85,6 @@ class _CapitalAreaMetroScreenState
       action: IconButton(
         onPressed: () {
           stateRead.initWheelScroll();
-          // ref.read(capitalAreaMetroScreenProvider.notifier).initWheelScroll();
           showModalBottomSheet(
             context: context,
             builder: (context) {
@@ -142,29 +143,30 @@ class _CapitalAreaMetroScreenState
               if (!state.destinations.isEmpty)
                 Expanded(
                   child: ListView.builder(
-                    itemCount: state.destinations.length,
-                    itemBuilder: (_, index) {
-                      final model = state.destinations[index];
-                      return DestinationListItem(
-                        line: model.line,
-                        name: model.name,
-                        isTracking: model.isTracking,
-                        onPressedDelete: () {
-                          stateRead.removeDestination(model.id);
-                        },
-                        onValueChanged: (value) {
-                          _trackingId = model.id;
-                          stateRead.toggleTracking(model.id);
+                      itemCount: state.destinations.length,
+                      itemBuilder: (_, index) {
+                        final model = state.destinations[index];
+                        return DestinationListItem(
+                          line: model.line,
+                          name: model.name,
+                          isTracking: model.isTracking,
+                          onPressedDelete: () {
+                            stateRead.removeDestination(model.id);
+                          },
+                          onValueChanged: (value) {
+                            _trackingId = model.id;
+                            stateRead.toggleTracking(model.id);
+                            final distance = locationState.distanceInMeters;
 
-                          if(value) {
-                            locationProvider.getStartLocationSubscription(model.lat, model.lng);
-                          } else {
-                            locationProvider.cancelLocationSubscription();
-                          }
-                        },
-                      );
-                    }
-                  ),
+                            if (value) {
+                              locationRead.getStartLocationSubscription(
+                                  model.lat, model.lng);
+                            } else {
+                              locationRead.cancelLocationSubscription();
+                            }
+                          },
+                        );
+                      }),
                 )
             ],
           );

@@ -37,10 +37,7 @@ class DefaultLayout extends StatelessWidget {
         ),
       ),
       foregroundColor: Colors.black,
-      actions: [
-        if(action != null)
-          action!
-      ],
+      actions: [if (action != null) action!],
     );
   }
 }

@@ -17,8 +17,9 @@ class LocalStorageService {
     List<Metro> destinations = [];
     final List<String>? savedDestinations = _loadDestinations();
     if (savedDestinations != null) {
-      final jsonString =
-      savedDestinations.map((e) => jsonDecode(e) as Map<String, dynamic>).toList();
+      final jsonString = savedDestinations
+          .map((e) => jsonDecode(e) as Map<String, dynamic>)
+          .toList();
       destinations = jsonString.map((e) => Metro.fromSharedPref(e)).toList();
     }
 
@@ -30,8 +31,7 @@ class LocalStorageService {
     final String jsonStrings = jsonEncode(destination.toJson());
 
     if (savedDestinations == null) {
-      await _pref
-          .setStringList('capitalDestination', <String>[jsonStrings]);
+      await _pref.setStringList('capitalDestination', <String>[jsonStrings]);
     } else {
       await _pref.setStringList(
           'capitalDestination', <String>[...savedDestinations, jsonStrings]);
@@ -42,8 +42,9 @@ class LocalStorageService {
     final List<String>? savedDestinations = _loadDestinations();
 
     if (savedDestinations != null) {
-      final jsonString =
-      savedDestinations.map((e) => jsonDecode(e) as Map<String, dynamic>).toList();
+      final jsonString = savedDestinations
+          .map((e) => jsonDecode(e) as Map<String, dynamic>)
+          .toList();
       final newData = jsonString
           .where((metro) => metro['id'] != id)
           .map((e) => Metro.fromSharedPref(e).toJson())
@@ -54,8 +55,9 @@ class LocalStorageService {
   }
 
   List<String>? _loadDestinations() {
-     final List<String>? destinations = _pref.getStringList('capitalDestination');
+    final List<String>? destinations =
+        _pref.getStringList('capitalDestination');
 
-     return destinations;
+    return destinations;
   }
 }

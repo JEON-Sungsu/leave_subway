@@ -1,13 +1,14 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:leave_subway/service/service_config.dart';
 
-final FlutterLocalNotificationsPlugin localNotification = FlutterLocalNotificationsPlugin();
-
+final FlutterLocalNotificationsPlugin localNotification =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> initLocalNotification() async {
   AndroidInitializationSettings initSettingsAndroid =
-  const AndroidInitializationSettings('ic_launcher');
+      const AndroidInitializationSettings('ic_launcher');
   DarwinInitializationSettings initSettingsIOS =
-  const DarwinInitializationSettings(
+      const DarwinInitializationSettings(
     requestSoundPermission: false,
     requestBadgePermission: false,
     requestAlertPermission: false,
@@ -16,28 +17,12 @@ Future<void> initLocalNotification() async {
     android: initSettingsAndroid,
     iOS: initSettingsIOS,
   );
-  await localNotification.initialize(
-    initSettings,
-  );
+  await localNotification.initialize(initSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {});
 }
 
-Future<void> showLocalPush() async {
-  NotificationDetails details = const NotificationDetails(
-    iOS: DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    ),
-    android: AndroidNotificationDetails(
-        "show_test", "show_test",
-        importance: Importance.max,
-        priority: Priority.high,
-        icon: 'ic_launcher'),
-  );
-  await localNotification.show(
-    0,
-    "타이틀이 보여지는 영역입니다.",
-    "컨텐츠 내용이 보여지는 영역입니다.",
-    details,
-  );
+void showLocalPush(
+    {required String title, required String body, String? isLast}) async {
+  await localNotification.show(0, title, body, NOTIFICATION_DETAIL,
+      payload: isLast);
 }

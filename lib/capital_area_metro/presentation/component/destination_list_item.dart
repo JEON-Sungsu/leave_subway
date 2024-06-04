@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:leave_subway/capital_area_metro/domain/model/metro.dart';
 import 'package:leave_subway/common/const/color.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,14 +10,13 @@ class DestinationListItem extends StatelessWidget {
   final VoidCallback onPressedDelete;
   final ValueChanged<bool> onValueChanged;
 
-  DestinationListItem({
-    super.key,
-    required this.line,
-    required this.name,
-    required this.isTracking,
-    required this.onPressedDelete,
-    required this.onValueChanged
-  });
+  DestinationListItem(
+      {super.key,
+      required this.line,
+      required this.name,
+      required this.isTracking,
+      required this.onPressedDelete,
+      required this.onValueChanged});
 
   @override
   Widget build(BuildContext context) {

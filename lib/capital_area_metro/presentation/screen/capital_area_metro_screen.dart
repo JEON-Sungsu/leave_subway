@@ -74,9 +74,10 @@ class _CapitalAreaMetroScreenState
     });
 
     ref.listen(locationServiceProvider, (_, state) {
-      if (state.isCancel) {
-        stateRead.toggleTracking(_trackingId);
-        print('location listen 메서드: ${state.isCancel}');
+      if (state.distanceInMeters != null) {
+        if (state.isCancel && state.distanceInMeters! <= 200) {
+          stateRead.toggleTracking(_trackingId);
+        }
       }
     });
 
@@ -156,7 +157,6 @@ class _CapitalAreaMetroScreenState
                           onValueChanged: (value) {
                             _trackingId = model.id;
                             stateRead.toggleTracking(model.id);
-                            final distance = locationState.distanceInMeters;
 
                             if (value) {
                               locationRead.getStartLocationSubscription(

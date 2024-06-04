@@ -24,17 +24,23 @@ class LocationServiceNotifier extends StateNotifier<LocationServiceModel> {
             distanceInMeters: distanceInMeters,
             isCancel: false,
           );
+          print(distanceInMeters);
         }
 
-        if (state.distanceInMeters != null && state.distanceInMeters! >= 500) {
+        if (state.distanceInMeters != null) {
           switch (state.distanceInMeters!) {
+            case <= 200:
+              showLocalPush(
+                title: '목적지 도착 알림',
+                body: '목적지 부근 입니다. 추적을 종료 합니다.',
+              );
+              cancelLocationSubscription();
+              return;
             case <= 500:
               showLocalPush(
                 title: '목적지 도착 알림',
                 body: '도착 1분 내외 입니다. 하차 준비 해주세요!',
               );
-              cancelLocationSubscription();
-              return;
             case <= 1000:
               showLocalPush(
                 title: '목적지 도착 알림',
@@ -42,12 +48,7 @@ class LocationServiceNotifier extends StateNotifier<LocationServiceModel> {
               );
           }
         } else {
-          showLocalPush(
-            title: '목적지 도착 알림',
-            body: '이미 목적지 인근입니다.',
-          );
-          cancelLocationSubscription();
-          return;
+
         }
       },
     );

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
+import 'package:leave_subway/capital_area_metro/domain/model/metro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final localDataManagerProvider = Provider((ref) => LocalDataManager());
+final localStorageServiceProvider = Provider((ref) => LocalStorageService());
 
-class LocalDataManager {
+class LocalStorageService {
   late SharedPreferences _pref;
 
   Future<void> init() async {

@@ -1,37 +1,38 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:leave_subway/capital_area_metro/data/model/capital_area_model.dart';
-import 'package:leave_subway/capital_area_metro/data/model/metro.dart';
+
 import 'package:leave_subway/capital_area_metro/data/repository/metro_list_repository_impl.dart';
+import 'package:leave_subway/capital_area_metro/domain/model/capital_area_model.dart';
+import 'package:leave_subway/capital_area_metro/domain/model/metro.dart';
 import 'package:leave_subway/capital_area_metro/domain/repository/metro_list_repository.dart';
-import 'package:leave_subway/common/data/local_data_manager.dart';
+import 'package:leave_subway/common/data/local_storage_service.dart';
 
 final capitalAreaMetroScreenProvider =
     StateNotifierProvider<CapitalAreaMetroScreenNotifier, CapitalAreaModel>(
   (ref) {
     final repository = ref.watch(metroListRepositoryProvider);
-    final localDataManager = ref.watch(localDataManagerProvider);
+    final localStorageService = ref.watch(localStorageServiceProvider);
 
     return CapitalAreaMetroScreenNotifier(
       repository: repository,
-      localDataManager: localDataManager,
+      localStorageService: localStorageService,
     );
   },
 );
 
 class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   MetroListRepository repository;
-  LocalDataManager localDataManager;
+  LocalStorageService localStorageService;
 
   CapitalAreaMetroScreenNotifier({
     required this.repository,
-    required this.localDataManager,
+    required this.localStorageService,
   }) : super(CapitalAreaModel(isLoading: true)) {
     _initState();
   }
 
   void _initState() async {
-    await localDataManager.init();
-    List<Metro> destinations = await localDataManager.getSavedDestination();
+    await localStorageService.init();
+    List<Metro> destinations = await localStorageService.getSavedDestination();
     final metroData = await repository.getMetroList();
     final lines = metroData.map((e) => e.line).toSet();
 
@@ -74,7 +75,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     state =
         state.copyWith(destinations: [...state.destinations, ...destination]);
 
-    localDataManager.addDestination(destination.first);
+    localStorageService.addDestination(destination.first);
   }
 
   void toggleTracking(String id) {
@@ -101,6 +102,6 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   void removeDestination(String id) async {
     final pState = state.destinations.where((e) => e.id != id).toList();
     state = state.copyWith(destinations: pState);
-    localDataManager.removeDestination(id);
+    localStorageService.removeDestination(id);
   }
 }

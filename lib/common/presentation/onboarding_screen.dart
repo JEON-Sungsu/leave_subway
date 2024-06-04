@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:leave_subway/capital_area_metro/presentation/screen/capital_area_metro_screen.dart';
 import 'package:leave_subway/common/const/color.dart';
-import 'package:leave_subway/capital_area_metro/presentation/capital_area_metro_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 

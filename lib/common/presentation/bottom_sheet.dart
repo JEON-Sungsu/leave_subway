@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:leave_subway/capital_area_metro/data/model/capital_area_model.dart';
+import 'package:leave_subway/capital_area_metro/domain/model/capital_area_model.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
 import 'package:leave_subway/common/const/color.dart';
 

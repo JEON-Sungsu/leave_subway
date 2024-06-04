@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:leave_subway/common/model/location_service_model.dart';
+import 'package:leave_subway/service/notification_service.dart';
 import 'package:leave_subway/service/service_config.dart';
 
 final locationServiceProvider =
@@ -21,30 +20,39 @@ class LocationServiceNotifier extends StateNotifier<LocationServiceModel> {
         if (position != null) {
           final distanceInMeters = Geolocator.distanceBetween(position.latitude,
               position.longitude, destinationLat, destinationLon);
-          print(distanceInMeters);
-
           state = state.copyWith(
-              distanceInMeters: distanceInMeters);
+            distanceInMeters: distanceInMeters,
+            isCancel: false,
+          );
         }
 
-        if (state.distanceInMeters != null) {
+        if (state.distanceInMeters != null && state.distanceInMeters! >= 500) {
           switch (state.distanceInMeters!) {
             case <= 500:
-              print('목적지 500미터 내외 입니다. 내릴 준비를 해주세요. ');
+              showLocalPush(
+                title: '목적지 도착 알림',
+                body: '도착 1분 내외 입니다. 하차 준비 해주세요!',
+              );
               cancelLocationSubscription();
-              state = state.copyWith(isCancel: true);
               return;
             case <= 1000:
-              print('약 3분 내외로 도착할 예정입니다.');
+              showLocalPush(
+                title: '목적지 도착 알림',
+                body: '약 3분 내외로 도착할 예정 입니다.',
+              );
           }
+        } else {
+          showLocalPush(
+            title: '목적지 도착 알림',
+            body: '이미 목적지 인근입니다.',
+          );
+          cancelLocationSubscription();
+          return;
         }
       },
     );
 
-    state = state.copyWith(
-        subscription: subscription,
-        isCancel: false
-    );
+    state = state.copyWith(subscription: subscription, isCancel: false);
   }
 
   void cancelLocationSubscription() {
@@ -55,7 +63,7 @@ class LocationServiceNotifier extends StateNotifier<LocationServiceModel> {
     }
     subscription.cancel();
 
-    state = state.copyWith(subscription: subscription);
+    state = state.copyWith(subscription: subscription, isCancel: true);
     print('구독 취소');
   }
 }

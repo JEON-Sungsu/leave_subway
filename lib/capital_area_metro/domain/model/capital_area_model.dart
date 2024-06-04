@@ -6,7 +6,7 @@ part 'capital_area_model.freezed.dart';
 part 'capital_area_model.g.dart';
 
 @freezed
-class CapitalAreaModel with _$CapitalAreaModel{
+class CapitalAreaModel with _$CapitalAreaModel {
   const factory CapitalAreaModel({
     @Default([]) List<String> lineNames,
     @Default([]) List<Metro> wholeMetros,
@@ -17,5 +17,6 @@ class CapitalAreaModel with _$CapitalAreaModel{
     @Default(false) bool isOtherTracking,
   }) = _CapitalAreaModel;
 
-  factory CapitalAreaModel.fromJson(Map<String, Object?> json) => _$CapitalAreaModelFromJson(json);
+  factory CapitalAreaModel.fromJson(Map<String, Object?> json) =>
+      _$CapitalAreaModelFromJson(json);
 }

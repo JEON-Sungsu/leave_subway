@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:leave_subway/capital_area_metro/domain/model/capital_area_model.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
 import 'package:leave_subway/common/const/color.dart';
 
@@ -18,7 +17,8 @@ class DestinationBottomSheet extends ConsumerStatefulWidget {
 class _DestinationBottomSheetState
     extends ConsumerState<DestinationBottomSheet> {
   Timer? _timer;
-  final FixedExtentScrollController _stationScrollController = FixedExtentScrollController(initialItem: 0);
+  final FixedExtentScrollController _stationScrollController =
+      FixedExtentScrollController(initialItem: 0);
 
   void _onScroll(int value, Function(int) onChangeValue) async {
     _timer?.cancel();
@@ -37,7 +37,6 @@ class _DestinationBottomSheetState
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
-    if (state is CapitalAreaModel)
     return Container(
       height: deviceHeight * 0.5,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
@@ -119,8 +118,6 @@ class _DestinationBottomSheetState
         ],
       ),
     );
-
-    return Center(child: Text('오류가 발생 하였습니다.'));
   }
 
   SizedBox _renderWheelScroll(

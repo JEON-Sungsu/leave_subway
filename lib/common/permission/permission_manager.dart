@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum CombinedPermissionStatus {
@@ -52,7 +50,6 @@ class PermissionManager {
             locationPermission == PermissionStatus.permanentlyDenied) &&
         (notificationPermission == PermissionStatus.denied ||
             notificationPermission == PermissionStatus.permanentlyDenied)) {
-
       return CombinedPermissionStatus.locationNotifyBothDenied;
     }
 

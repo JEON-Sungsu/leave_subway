@@ -21,12 +21,8 @@ Future<void> initLocalNotification() async {
       onDidReceiveNotificationResponse: (NotificationResponse response) {});
 }
 
-void showLocalPush({required String title, required String body, String? isLast}) async {
-  await localNotification.show(
-    0,
-    title,
-    body,
-    NOTIFICATION_DETAIL,
-    payload: isLast
-  );
+void showLocalPush(
+    {required String title, required String body, String? isLast}) async {
+  await localNotification.show(0, title, body, NOTIFICATION_DETAIL,
+      payload: isLast);
 }

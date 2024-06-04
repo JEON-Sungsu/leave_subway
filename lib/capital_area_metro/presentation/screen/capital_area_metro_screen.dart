@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/capital_area_metro/presentation/component/destination_list_item.dart';
@@ -56,10 +55,7 @@ class _CapitalAreaMetroScreenState
         _isSnackBarShow = true;
       },
     );
-    ScaffoldMessenger.of(context)
-        .showSnackBar(snackBar)
-        .closed
-        .then((value) {
+    ScaffoldMessenger.of(context).showSnackBar(snackBar).closed.then((value) {
       _isSnackBarShow = false;
     });
   }
@@ -89,7 +85,6 @@ class _CapitalAreaMetroScreenState
       action: IconButton(
         onPressed: () {
           stateRead.initWheelScroll();
-          // ref.read(capitalAreaMetroScreenProvider.notifier).initWheelScroll();
           showModalBottomSheet(
             context: context,
             builder: (context) {
@@ -148,30 +143,30 @@ class _CapitalAreaMetroScreenState
               if (!state.destinations.isEmpty)
                 Expanded(
                   child: ListView.builder(
-                    itemCount: state.destinations.length,
-                    itemBuilder: (_, index) {
-                      final model = state.destinations[index];
-                      return DestinationListItem(
-                        line: model.line,
-                        name: model.name,
-                        isTracking: model.isTracking,
-                        onPressedDelete: () {
-                          stateRead.removeDestination(model.id);
-                        },
-                        onValueChanged: (value) {
-                          _trackingId = model.id;
-                          stateRead.toggleTracking(model.id);
-                          final distance = locationState.distanceInMeters;
+                      itemCount: state.destinations.length,
+                      itemBuilder: (_, index) {
+                        final model = state.destinations[index];
+                        return DestinationListItem(
+                          line: model.line,
+                          name: model.name,
+                          isTracking: model.isTracking,
+                          onPressedDelete: () {
+                            stateRead.removeDestination(model.id);
+                          },
+                          onValueChanged: (value) {
+                            _trackingId = model.id;
+                            stateRead.toggleTracking(model.id);
+                            final distance = locationState.distanceInMeters;
 
-                          if(value) {
-                            locationRead.getStartLocationSubscription(model.lat, model.lng);
-                          } else {
-                            locationRead.cancelLocationSubscription();
-                          }
-                        },
-                      );
-                    }
-                  ),
+                            if (value) {
+                              locationRead.getStartLocationSubscription(
+                                  model.lat, model.lng);
+                            } else {
+                              locationRead.cancelLocationSubscription();
+                            }
+                          },
+                        );
+                      }),
                 )
             ],
           );

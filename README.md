@@ -1,16 +1,7 @@
-# leave_subway
+# 프로젝트 소개
+지하철 목적지를 선택하면, 목적지에 도착하기 전 일정 간격으로 푸쉬 알림을 보내주는 기능이 메인인 어플리케이션 입니다. 
+지하철을 타고 어디론가 이동할 때, ‘지금 어디쯤이지?’ 라고 생각이 들어 위치를 보고싶지만 현재 어느역 근처에 왔는지 빠르게 확인이 불가능해 답답했던
+경험을 떠올려서, ‘내릴때가 되면 자동으로 알려주는 어플리케이션이 있으면 좋겠다.’ 라는 생각에서 출발하여 시작하게 된  프로젝트 입니다.
 
-지하철 목적지 도착 알림 앱
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 개요
+- 추후 업데이트 예정

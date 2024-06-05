@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/capital_area_metro/presentation/screen/capital_area_metro_screen.dart';
+import 'package:leave_subway/common/const/message.dart';
 import 'package:leave_subway/common/permission/permission_manager.dart';
 import 'package:leave_subway/common/presentation/onboarding_screen.dart';
 
@@ -30,7 +31,7 @@ class _App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '내리라',
+      title: APP_TITLE,
       home: FutureBuilder<bool>(
         future: _checkFirstInstall(),
         builder: (context, snapshot) {

@@ -6,6 +6,7 @@ import 'package:leave_subway/capital_area_metro/presentation/component/destinati
 import 'package:leave_subway/capital_area_metro/presentation/component/permission_alert.dart';
 import 'package:leave_subway/capital_area_metro/presentation/component/permission_denied.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
+import 'package:leave_subway/common/const/message.dart';
 import 'package:leave_subway/common/permission/permission_manager.dart';
 import 'package:leave_subway/common/presentation/bottom_sheet.dart';
 import 'package:leave_subway/common/presentation/default_layout.dart';
@@ -69,7 +70,7 @@ class _CapitalAreaMetroScreenState
 
     ref.listen(capitalAreaMetroScreenProvider, (_, state) {
       if (state.isOtherTracking && !_isSnackBarShow) {
-        _showSnackBar('현재 추적중인 목적지의 추적 종료 후 실행해주세요.');
+        _showSnackBar(SNACK_BAR_CONTENT);
       }
     });
 
@@ -82,7 +83,7 @@ class _CapitalAreaMetroScreenState
     });
 
     return DefaultLayout(
-      title: '내리라',
+      title: APP_TITLE,
       action: IconButton(
         onPressed: () {
           stateRead.initWheelScroll();
@@ -133,7 +134,7 @@ class _CapitalAreaMetroScreenState
               if (state.destinations.isEmpty && !state.isLoading)
                 Center(
                   child: Text(
-                    '등록된 목적지가 존재하지 않습니다.\n 목적지를 등록해주세요.',
+                    EMPTY_DESTINATION,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,

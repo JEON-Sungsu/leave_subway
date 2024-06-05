@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leave_subway/common/const/color.dart';
+import 'package:leave_subway/common/const/message.dart';
 
 class DefaultLayout extends StatelessWidget {
   final String title;
@@ -72,7 +73,7 @@ class CustomDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '전체 메뉴',
+                  DRAWER_TITLE,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 19,
@@ -100,7 +101,7 @@ class CustomDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 Text(
-                  '도시별 지하철',
+                  SUBTITLE_METRO,
                   style: subtitleStyle,
                 ),
                 SizedBox(height: 16),
@@ -108,7 +109,7 @@ class CustomDrawer extends StatelessWidget {
                   dense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 0),
                   title: Text(
-                    '· 수도권',
+                    CAPITAL_AREA,
                     style: subtitleStyle.copyWith(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
@@ -118,7 +119,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 SizedBox(height: 24),
                 Text(
-                  '어플리케이션 정보',
+                  SUBTITLE_INFO,
                   style: subtitleStyle,
                 ),
                 SizedBox(height: 16),
@@ -126,7 +127,7 @@ class CustomDrawer extends StatelessWidget {
                   dense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 0),
                   title: Text(
-                    '· 이용 가이드',
+                    USE_GUIDE,
                     style: subtitleStyle.copyWith(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
@@ -138,7 +139,7 @@ class CustomDrawer extends StatelessWidget {
                   dense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 0),
                   title: Text(
-                    '· 개인정보 처리 방침',
+                    PRIVACY,
                     style: subtitleStyle.copyWith(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
@@ -150,7 +151,7 @@ class CustomDrawer extends StatelessWidget {
                   dense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 0),
                   title: Text(
-                    '· 오픈소스 라이센스',
+                    LICENSE,
                     style: subtitleStyle.copyWith(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),

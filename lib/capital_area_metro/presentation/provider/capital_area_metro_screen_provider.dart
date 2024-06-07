@@ -45,10 +45,10 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   }
 
   void initWheelScroll() {
-    setStationNames('01호선');
+    setStationNames(lineName: '01호선');
   }
 
-  void setStationNames(String lineName) async {
+  void setStationNames({required String lineName}) async {
     final sortedMetroByLine =
         state.wholeMetros.where((e) => e.line == lineName).toList();
     final selectedStation = sortedMetroByLine.first.name;
@@ -59,7 +59,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     );
   }
 
-  void setCurrentStation(String stationName) {
+  void setCurrentStation({required String stationName}) {
     state = state.copyWith(selectedStation: stationName);
   }
 
@@ -78,7 +78,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     localStorageService.addDestination(destination.first);
   }
 
-  void toggleTracking(String id) {
+  void toggleTracking({required String id}) {
     final isOtherTracking =
         state.destinations.any((e) => e.isTracking == true && e.id != id);
 
@@ -99,7 +99,16 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     );
   }
 
-  void removeDestination(String id) async {
+  void toggleReset() {
+    state = state.copyWith(
+      destinations: state.destinations
+          .map((e) => e.copyWith(isTracking: false))
+          .toList(),
+      isOtherTracking: false,
+    );
+  }
+
+  void removeDestination({required String id}) async {
     final pState = state.destinations.where((e) => e.id != id).toList();
     state = state.copyWith(destinations: pState);
     localStorageService.removeDestination(id);

@@ -11,5 +11,11 @@ final router = GoRouter(
         return StartScreen();
       },
     ),
+    GoRoute(
+      path: '/capital',
+      builder: (context, state) {
+        return CapitalAreaMetroScreen();
+      },
+    ),
   ],
 );

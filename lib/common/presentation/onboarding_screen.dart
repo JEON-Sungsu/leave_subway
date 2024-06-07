@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:leave_subway/capital_area_metro/presentation/screen/capital_area_metro_screen.dart';
 import 'package:leave_subway/common/const/color.dart';
 import 'package:lottie/lottie.dart';
@@ -54,12 +55,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     minimumSize: const Size.fromHeight(50),
                   ),
-                  onPressed: () async {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (_) => CapitalAreaMetroScreen()),
-                      (route) => false,
-                    );
+                  onPressed: () {
+                    context.go('/capital');
                   },
                   child: const Text(
                     '시작하기',

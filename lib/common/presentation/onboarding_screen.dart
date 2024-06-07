@@ -144,7 +144,7 @@ class _TextAnimationState extends State<_TextAnimation> {
           opacity: _isVisible[3] ? 1 : 0.0,
           duration: const Duration(milliseconds: 300),
           child: const Text(
-            '답답한 경험 한 번쯤 있으셨 나요?',
+            '답답한 경험 한 번쯤 있으셨나요?',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,

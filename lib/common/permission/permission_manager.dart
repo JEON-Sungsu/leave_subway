@@ -1,17 +1,17 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum CombinedPermissionStatus {
-  locationDisabled,
-  locationDenied,
-  notifyDenied,
-  locationNotifyBothDenied,
-  allGranted,
-}
+final permissionProvider =
+    StateNotifierProvider<PermissionNotifier, CombinedPermissionStatus>(
+        (ref) => PermissionNotifier());
 
-class PermissionManager {
+class PermissionNotifier extends StateNotifier<CombinedPermissionStatus> {
+  PermissionNotifier() : super(CombinedPermissionStatus.initialState);
+
   //위치 권한 요청
   Future<void> requestLocationPermission() async {
     if (await Permission.locationWhenInUse.serviceStatus.isDisabled) {
+      state = CombinedPermissionStatus.locationDisabled;
       return;
     }
 
@@ -42,7 +42,7 @@ class PermissionManager {
     }
   }
 
-  Future<CombinedPermissionStatus> setPermissionStatus() async {
+  Future<void> setPermissionStatus() async {
     final locationPermission = await Permission.location.status;
     final notificationPermission = await Permission.notification.status;
 
@@ -50,19 +50,31 @@ class PermissionManager {
             locationPermission == PermissionStatus.permanentlyDenied) &&
         (notificationPermission == PermissionStatus.denied ||
             notificationPermission == PermissionStatus.permanentlyDenied)) {
-      return CombinedPermissionStatus.locationNotifyBothDenied;
+      state = CombinedPermissionStatus.locationNotifyBothDenied;
+      return;
     }
 
     if (locationPermission == PermissionStatus.denied ||
         locationPermission == PermissionStatus.permanentlyDenied) {
-      return CombinedPermissionStatus.locationDenied;
+      state = CombinedPermissionStatus.locationDenied;
+      return;
     }
 
     if (notificationPermission == PermissionStatus.denied ||
         notificationPermission == PermissionStatus.permanentlyDenied) {
-      return CombinedPermissionStatus.notifyDenied;
+      state = CombinedPermissionStatus.notifyDenied;
+      return;
     }
 
-    return CombinedPermissionStatus.allGranted;
+    state = CombinedPermissionStatus.allGranted;
   }
+}
+
+enum CombinedPermissionStatus {
+  initialState,
+  locationDisabled,
+  locationDenied,
+  notifyDenied,
+  locationNotifyBothDenied,
+  allGranted,
 }

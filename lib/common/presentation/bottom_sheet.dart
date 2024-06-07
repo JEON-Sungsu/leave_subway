@@ -94,7 +94,7 @@ class _DestinationBottomSheetState
                 callBack: (int index) {
                   ref
                       .read(capitalAreaMetroScreenProvider.notifier)
-                      .setStationNames(state.lineNames[index]);
+                      .setStationNames(lineName: state.lineNames[index]);
                   _stationScrollController.animateTo(
                     0.0,
                     duration: Duration(milliseconds: 500),
@@ -111,7 +111,7 @@ class _DestinationBottomSheetState
                   final stationName = state.sortedMetroByLine[index].name;
                   ref
                       .read(capitalAreaMetroScreenProvider.notifier)
-                      .setCurrentStation(stationName);
+                      .setCurrentStation(stationName: stationName);
                 },
               ),
             ],

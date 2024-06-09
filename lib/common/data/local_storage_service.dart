@@ -4,15 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/capital_area_metro/domain/model/metro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final localStorageServiceProvider = Provider((ref) => LocalStorageService());
+final sharePreferenceProvider = Provider<SharedPreferences>((ref) => throw UnimplementedError());
+
+final localStorageServiceProvider = Provider((ref) {
+  final pref = ref.watch(sharePreferenceProvider);
+
+  return LocalStorageService(pref: pref);
+});
 
 class LocalStorageService {
-  late SharedPreferences _pref;
-
-  Future<void> init() async {
-    _pref = await SharedPreferences.getInstance();
-  }
-
+  final SharedPreferences _pref;
+  
   Future<List<Metro>> getSavedDestination() async {
     List<Metro> destinations = [];
     final List<String>? savedDestinations = _loadDestinations();
@@ -60,4 +62,8 @@ class LocalStorageService {
 
     return destinations;
   }
+
+  const LocalStorageService({
+    required SharedPreferences pref,
+  }) : _pref = pref;
 }

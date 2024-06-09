@@ -31,7 +31,6 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   }
 
   void _initState() async {
-    await localStorageService.init();
     List<Metro> destinations = await localStorageService.getSavedDestination();
     final metroData = await repository.getMetroList();
     final lines = metroData.map((e) => e.line).toSet();

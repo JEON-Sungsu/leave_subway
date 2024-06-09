@@ -17,12 +17,12 @@ class StartScreen extends ConsumerStatefulWidget {
 class _StartScreenState extends ConsumerState<StartScreen> {
   @override
   void initState() {
-    super.initState();WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    super.initState();
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     _permissionRequest();
     initLocalNotification();
     FlutterNativeSplash.remove();
-    initLocalNotification();
   }
 
   _permissionRequest() async {

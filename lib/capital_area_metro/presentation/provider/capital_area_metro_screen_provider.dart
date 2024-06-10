@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:leave_subway/capital_area_metro/data/repository/metro_list_repository_impl.dart';
@@ -49,7 +50,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
 
   void setStationNames({required String lineName}) async {
     final sortedMetroByLine =
-        state.wholeMetros.where((e) => e.line == lineName).toList();
+        state.wholeMetros.where((e) => e.line == lineName).sorted((a, b) => a.name.compareTo(b.name)).toList();
     final selectedStation = sortedMetroByLine.first.name;
 
     state = state.copyWith(

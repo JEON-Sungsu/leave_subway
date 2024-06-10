@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:leave_subway/capital_area_metro/data/repository/metro_list_repository_impl.dart';
@@ -31,7 +32,6 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   }
 
   void _initState() async {
-    await localStorageService.init();
     List<Metro> destinations = await localStorageService.getSavedDestination();
     final metroData = await repository.getMetroList();
     final lines = metroData.map((e) => e.line).toSet();
@@ -45,12 +45,12 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   }
 
   void initWheelScroll() {
-    setStationNames('01호선');
+    setStationNames(lineName: '01호선');
   }
 
-  void setStationNames(String lineName) async {
+  void setStationNames({required String lineName}) async {
     final sortedMetroByLine =
-        state.wholeMetros.where((e) => e.line == lineName).toList();
+        state.wholeMetros.where((e) => e.line == lineName).sorted((a, b) => a.name.compareTo(b.name)).toList();
     final selectedStation = sortedMetroByLine.first.name;
 
     state = state.copyWith(
@@ -59,7 +59,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     );
   }
 
-  void setCurrentStation(String stationName) {
+  void setCurrentStation({required String stationName}) {
     state = state.copyWith(selectedStation: stationName);
   }
 
@@ -78,7 +78,7 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     localStorageService.addDestination(destination.first);
   }
 
-  void toggleTracking(String id) {
+  void toggleTracking({required String id}) {
     final isOtherTracking =
         state.destinations.any((e) => e.isTracking == true && e.id != id);
 
@@ -99,7 +99,16 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
     );
   }
 
-  void removeDestination(String id) async {
+  void toggleReset() {
+    state = state.copyWith(
+      destinations: state.destinations
+          .map((e) => e.copyWith(isTracking: false))
+          .toList(),
+      isOtherTracking: false,
+    );
+  }
+
+  void removeDestination({required String id}) async {
     final pState = state.destinations.where((e) => e.id != id).toList();
     state = state.copyWith(destinations: pState);
     localStorageService.removeDestination(id);

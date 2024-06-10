@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:leave_subway/capital_area_metro/presentation/provider/capital_area_metro_screen_provider.dart';
 import 'package:leave_subway/common/const/color.dart';
+import 'package:leave_subway/common/const/message.dart';
 
 class DestinationBottomSheet extends ConsumerStatefulWidget {
   const DestinationBottomSheet({
@@ -55,7 +56,7 @@ class _DestinationBottomSheetState
                   ),
                   Center(
                     child: Text(
-                      '목적지 설정',
+                      BOTTOM_SHEET_TITLE,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -74,7 +75,7 @@ class _DestinationBottomSheetState
                       Navigator.pop(context);
                     },
                     child: Text(
-                      '등록하기',
+                      ENROLL_BUTTON,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -93,7 +94,7 @@ class _DestinationBottomSheetState
                 callBack: (int index) {
                   ref
                       .read(capitalAreaMetroScreenProvider.notifier)
-                      .setStationNames(state.lineNames[index]);
+                      .setStationNames(lineName: state.lineNames[index]);
                   _stationScrollController.animateTo(
                     0.0,
                     duration: Duration(milliseconds: 500),
@@ -110,7 +111,7 @@ class _DestinationBottomSheetState
                   final stationName = state.sortedMetroByLine[index].name;
                   ref
                       .read(capitalAreaMetroScreenProvider.notifier)
-                      .setCurrentStation(stationName);
+                      .setCurrentStation(stationName: stationName);
                 },
               ),
             ],

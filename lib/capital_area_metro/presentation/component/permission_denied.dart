@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:leave_subway/common/const/message.dart';
 import 'package:leave_subway/common/const/ui_style.dart';
 import 'package:leave_subway/common/permission/permission_manager.dart';
 
@@ -52,7 +53,7 @@ class _bothDenied extends StatelessWidget {
           },
           style: PRIMARY_ELEVATED_STYLE,
           child: const Text(
-            '설정으로 이동하기',
+            MOVE_TO_SETTING,
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
@@ -86,7 +87,7 @@ class _GPSDisabled extends StatelessWidget {
           },
           style: PRIMARY_ELEVATED_STYLE,
           child: const Text(
-            '설정으로 이동하기',
+            MOVE_TO_SETTING,
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
@@ -128,7 +129,7 @@ class _LocationOrNotificationDenied extends StatelessWidget {
           },
           style: PRIMARY_ELEVATED_STYLE,
           child: const Text(
-            '설정으로 이동하기',
+            MOVE_TO_SETTING,
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),

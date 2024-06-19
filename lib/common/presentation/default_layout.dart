@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:leave_subway/common/const/color.dart';
 import 'package:leave_subway/common/const/message.dart';
 
@@ -114,6 +115,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
+                    context.go('/capital');
                     Navigator.pop(context);
                   },
                 ),
@@ -132,6 +134,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
+                    context.push('/usage');
                     Navigator.pop(context);
                   },
                 ),

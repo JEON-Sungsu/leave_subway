@@ -40,7 +40,7 @@ class UsageGuideScreen extends StatelessWidget {
                     style: BASIC_PARAGRAPH_STYLE.copyWith(
                         fontWeight: FontWeight.w700, color: PRIMARY_COLOR),
                   ),
-                  TextSpan(text: '으로 측정된 되어'),
+                  TextSpan(text: '으로 계산 되어'),
                   TextSpan(text: '실제 도착 시간 과는 '),
                   TextSpan(
                     text: '차이가 ',

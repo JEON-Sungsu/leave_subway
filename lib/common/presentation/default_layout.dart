@@ -116,7 +116,6 @@ class CustomDrawer extends StatelessWidget {
                   ),
                   onTap: () {
                     context.go('/capital');
-                    Navigator.pop(context);
                   },
                 ),
                 SizedBox(height: 24),
@@ -134,8 +133,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
-                    context.push('/usage');
-                    Navigator.pop(context);
+                    context.go('/usage');
                   },
                 ),
                 ListTile(
@@ -147,7 +145,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    context.go('/privacy');
                   },
                 ),
                 ListTile(
@@ -159,7 +157,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    context.go('/license');
                   },
                 ),
               ],

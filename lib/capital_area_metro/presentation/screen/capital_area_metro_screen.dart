@@ -57,83 +57,83 @@ class _CapitalAreaMetroScreenState
       action: permissionState != CombinedPermissionStatus.allGranted
           ? null
           : IconButton(
-        onPressed: () {
-          stateRead.initWheelScroll();
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return DestinationBottomSheet();
-            },
-            useSafeArea: true,
-            isScrollControlled: true,
-          );
-        },
-        icon: Icon(Icons.add),
-      ),
+              onPressed: () {
+                stateRead.initWheelScroll();
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return DestinationBottomSheet();
+                  },
+                  useSafeArea: true,
+                  isScrollControlled: true,
+                );
+              },
+              icon: Icon(Icons.add),
+            ),
       child: permissionState != CombinedPermissionStatus.allGranted
           ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PermissionDenied(permission: permissionState),
-          ],
-        ),
-      )
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PermissionDenied(permission: permissionState),
+                ],
+              ),
+            )
           : Consumer(
-        builder: (context, ref, child) {
-          final state = ref.watch(capitalAreaMetroScreenProvider);
+              builder: (context, ref, child) {
+                final state = ref.watch(capitalAreaMetroScreenProvider);
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (state.isLoading)
-                Center(
-                  child: CircularProgressIndicator(),
-                ),
-              if (state.destinations.isEmpty && !state.isLoading)
-                Center(
-                  child: Text(
-                    EMPTY_DESTINATION,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              if (!state.destinations.isEmpty)
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.destinations.length,
-                    itemBuilder: (_, index) {
-                      final model = state.destinations[index];
-                      return DestinationListItem(
-                        line: model.line,
-                        name: model.name,
-                        isTracking: model.isTracking,
-                        onPressedDelete: () {
-                          stateRead.removeDestination(id: model.id);
-                          locationRead.cancelLocationSubscription();
-                        },
-                        onValueChanged: (value) {
-                          _trackingId = model.id;
-                          stateRead.toggleTracking(id: model.id);
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (state.isLoading)
+                      Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    if (state.destinations.isEmpty && !state.isLoading)
+                      Center(
+                        child: Text(
+                          EMPTY_DESTINATION,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    if (!state.destinations.isEmpty)
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.destinations.length,
+                          itemBuilder: (_, index) {
+                            final model = state.destinations[index];
+                            return DestinationListItem(
+                              line: model.line,
+                              name: model.name,
+                              isTracking: model.isTracking,
+                              onPressedDelete: () {
+                                stateRead.removeDestination(id: model.id);
+                                locationRead.cancelLocationSubscription();
+                              },
+                              onValueChanged: (value) {
+                                _trackingId = model.id;
+                                stateRead.toggleTracking(id: model.id);
 
-                          if (value) {
-                            locationRead.getStartLocationSubscription(
-                                model.lat, model.lng);
-                          } else {
-                            locationRead.cancelLocationSubscription();
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ),
-            ],
-          );
-        },
-      ),
+                                if (value) {
+                                  locationRead.getStartLocationSubscription(
+                                      model.lat, model.lng);
+                                } else {
+                                  locationRead.cancelLocationSubscription();
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
     );
   }
 

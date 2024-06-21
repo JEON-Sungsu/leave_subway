@@ -42,7 +42,7 @@ class LocationServiceNotifier extends StateNotifier<LocationServiceModel> {
                 title: PUSH_TITLE,
                 body: PUSH_CONTENT_ONE_MINUTE,
               );
-            case <= 3000:
+            case <= 2000:
               showLocalPush(
                 title: PUSH_TITLE,
                 body: PUSH_CONTENT_THREE_MINUTE,

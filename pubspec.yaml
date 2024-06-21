@@ -53,6 +53,9 @@ dependencies:
   google_fonts: ^6.2.1
   intl: ^0.19.0
   collection: ^1.18.0
+  webview_flutter: ^4.8.0
+  webview_flutter_wkwebview: ^3.13.1
+  webview_flutter_android: ^3.16.3
 
 dev_dependencies:
   build_runner: ^2.4.9

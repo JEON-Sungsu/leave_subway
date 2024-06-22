@@ -32,10 +32,8 @@ class _CapitalAreaMetroScreenState
     _noticePermission();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(capitalAreaMetroScreenProvider);
     final stateRead = ref.read(capitalAreaMetroScreenProvider.notifier);
     final locationRead = ref.read(locationServiceProvider.notifier);
     final permissionState = ref.watch(permissionProvider);
@@ -57,7 +55,8 @@ class _CapitalAreaMetroScreenState
     return DefaultLayout(
       title: APP_TITLE,
       action: permissionState != CombinedPermissionStatus.allGranted
-          ? null : IconButton(
+          ? null
+          : IconButton(
               onPressed: () {
                 stateRead.initWheelScroll();
                 showModalBottomSheet(
@@ -70,8 +69,7 @@ class _CapitalAreaMetroScreenState
                 );
               },
               icon: Icon(Icons.add),
-            )
-          ,
+            ),
       child: permissionState != CombinedPermissionStatus.allGranted
           ? Center(
               child: Column(
@@ -81,53 +79,60 @@ class _CapitalAreaMetroScreenState
                 ],
               ),
             )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (state.isLoading)
-                  Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                if (state.destinations.isEmpty && !state.isLoading)
-                  Center(
-                    child: Text(
-                      EMPTY_DESTINATION,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                if (!state.destinations.isEmpty)
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: state.destinations.length,
-                        itemBuilder: (_, index) {
-                          final model = state.destinations[index];
-                          return DestinationListItem(
-                            line: model.line,
-                            name: model.name,
-                            isTracking: model.isTracking,
-                            onPressedDelete: () {
-                              stateRead.removeDestination(id: model.id);
-                              locationRead.cancelLocationSubscription();
-                            },
-                            onValueChanged: (value) {
-                              _trackingId = model.id;
-                              stateRead.toggleTracking(id: model.id);
+          : Consumer(
+              builder: (context, ref, child) {
+                final state = ref.watch(capitalAreaMetroScreenProvider);
 
-                              if (value) {
-                                locationRead.getStartLocationSubscription(
-                                    model.lat, model.lng);
-                              } else {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (state.isLoading)
+                      Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    if (state.destinations.isEmpty && !state.isLoading)
+                      Center(
+                        child: Text(
+                          EMPTY_DESTINATION,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    if (!state.destinations.isEmpty)
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.destinations.length,
+                          itemBuilder: (_, index) {
+                            final model = state.destinations[index];
+                            return DestinationListItem(
+                              line: model.line,
+                              name: model.name,
+                              isTracking: model.isTracking,
+                              onPressedDelete: () {
+                                stateRead.removeDestination(id: model.id);
                                 locationRead.cancelLocationSubscription();
-                              }
-                            },
-                          );
-                        }),
-                  )
-              ],
+                              },
+                              onValueChanged: (value) {
+                                _trackingId = model.id;
+                                stateRead.toggleTracking(id: model.id);
+
+                                if (value) {
+                                  locationRead.getStartLocationSubscription(
+                                      model.lat, model.lng);
+                                } else {
+                                  locationRead.cancelLocationSubscription();
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
     );
   }

@@ -7,3 +7,9 @@ final PRIMARY_ELEVATED_STYLE = ElevatedButton.styleFrom(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8.0),
     ));
+
+final BASIC_PARAGRAPH_STYLE = TextStyle(
+  color: Colors.black,
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);

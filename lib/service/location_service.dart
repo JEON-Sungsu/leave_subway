@@ -30,19 +30,19 @@ class LocationServiceNotifier extends StateNotifier<LocationServiceModel> {
 
         if (state.distanceInMeters != null) {
           switch (state.distanceInMeters!) {
-            case <= 200:
+            case <= 500:
               showLocalPush(
                 title: PUSH_TITLE,
                 body: PUSH_CONTENT_NEAR,
               );
               cancelLocationSubscription();
               return;
-            case <= 500:
+            case <= 1000:
               showLocalPush(
                 title: PUSH_TITLE,
                 body: PUSH_CONTENT_ONE_MINUTE,
               );
-            case <= 1000:
+            case <= 2000:
               showLocalPush(
                 title: PUSH_TITLE,
                 body: PUSH_CONTENT_THREE_MINUTE,

@@ -7,7 +7,7 @@ final LocationSettings LOCATION_SETTING =
     defaultTargetPlatform == TargetPlatform.android
         ? AndroidSettings(
             accuracy: LocationAccuracy.best,
-            distanceFilter: 200,
+            distanceFilter: 1000,
             forceLocationManager: true,
             intervalDuration: const Duration(seconds:5),
             foregroundNotificationConfig: const ForegroundNotificationConfig(
@@ -19,7 +19,7 @@ final LocationSettings LOCATION_SETTING =
         : AppleSettings(
             accuracy: LocationAccuracy.best,
             activityType: ActivityType.fitness,
-            distanceFilter: 200,
+            distanceFilter: 1000,
             pauseLocationUpdatesAutomatically: true,
             showBackgroundLocationIndicator: true,
           );

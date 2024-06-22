@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:leave_subway/common/const/color.dart';
 import 'package:leave_subway/common/const/message.dart';
 
@@ -114,7 +115,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    context.go('/capital');
                   },
                 ),
                 SizedBox(height: 24),
@@ -132,7 +133,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    context.go('/usage');
                   },
                 ),
                 ListTile(
@@ -144,7 +145,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    context.go('/privacy');
                   },
                 ),
                 ListTile(
@@ -156,7 +157,7 @@ class CustomDrawer extends StatelessWidget {
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    context.go('/license');
                   },
                 ),
               ],

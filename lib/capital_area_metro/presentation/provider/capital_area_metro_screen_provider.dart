@@ -5,7 +5,7 @@ import 'package:leave_subway/capital_area_metro/data/repository/metro_list_repos
 import 'package:leave_subway/capital_area_metro/domain/model/capital_area_model.dart';
 import 'package:leave_subway/capital_area_metro/domain/model/metro.dart';
 import 'package:leave_subway/capital_area_metro/domain/repository/metro_list_repository.dart';
-import 'package:leave_subway/common/data/local_storage_service.dart';
+import 'package:leave_subway/service/local_storage_service.dart';
 
 final capitalAreaMetroScreenProvider =
     StateNotifierProvider<CapitalAreaMetroScreenNotifier, CapitalAreaModel>(

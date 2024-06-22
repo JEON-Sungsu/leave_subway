@@ -1,26 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:leave_subway/capital_area_metro/presentation/screen/capital_area_metro_screen.dart';
 import 'package:leave_subway/common/const/color.dart';
+import 'package:leave_subway/common/permission/permission_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   bool _isButtonVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _onTextWidgetRendered() {
     setState(() {
@@ -55,7 +52,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     minimumSize: const Size.fromHeight(50),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await ref.read(permissionProvider.notifier).requestLocationPermission();
+                    await ref.read(permissionProvider.notifier).requestNotificationPermission();
+                    await ref.read(permissionProvider.notifier).setPermissionStatus();
                     context.go('/capital');
                   },
                   child: const Text(

@@ -35,9 +35,10 @@
 
 ## 프로젝트 화면
 
-|시작 & 필수권한확인|플로우|푸쉬알림|
-|:--:|:--:|:--:|
-|![first_launch_leave](https://github.com/JEON-Sungsu/leave_subway/assets/63297236/a627a019-9254-4c39-a49a-1559d2b2a6cb)|![flow_leave](https://github.com/JEON-Sungsu/leave_subway/assets/63297236/5d857a1a-c4d6-409d-9390-a2879e30c3bb)|![push_notify](https://github.com/JEON-Sungsu/leave_subway/assets/63297236/aa2e31ec-e7ef-4108-b852-cc415842a176)|
+|시작 & 필수권한확인|플로우|푸쉬알림|기타페이지|
+|:--:|:--:|:--:|:--:|
+|![start](https://github.com/JEON-Sungsu/leave_subway/assets/63297236/c9a1234e-8b10-454f-9d19-e8629bd63dc4)|![flow](https://github.com/JEON-Sungsu/leave_subway/assets/63297236/7dbbd4c3-7ebf-42d0-86e0-29043e2696f7)|![push_notify](https://github.com/JEON-Sungsu/leave_subway/assets/63297236/aa2e31ec-e7ef-4108-b852-cc415842a176)|![extra](https://github.com/JEON-Sungsu/leave_subway/assets/63297236/26765495-6e0d-4b5d-8de4-be6107a6abcd)
+|
 
 <br/>
 

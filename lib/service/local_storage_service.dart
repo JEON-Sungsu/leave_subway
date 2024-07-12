@@ -12,6 +12,7 @@ final localStorageServiceProvider = Provider((ref) {
   return LocalStorageService(pref: pref);
 });
 
+//TODO: 추후 타지역 서비스가 늘어나면, 공용메서드로 변경 필요
 class LocalStorageService {
   final SharedPreferences _pref;
   

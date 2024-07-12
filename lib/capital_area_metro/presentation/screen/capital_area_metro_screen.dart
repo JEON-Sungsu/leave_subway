@@ -31,7 +31,6 @@ class _CapitalAreaMetroScreenState
     super.initState();
     _noticePermission();
   }
-
   @override
   Widget build(BuildContext context) {
     final stateRead = ref.read(capitalAreaMetroScreenProvider.notifier);
@@ -46,7 +45,7 @@ class _CapitalAreaMetroScreenState
 
     ref.listen(locationServiceProvider, (_, state) {
       if (state.distanceInMeters != null) {
-        if (state.isCancel && state.distanceInMeters! <= 200) {
+        if (state.isCancel && state.distanceInMeters! <= 500) {
           stateRead.toggleTracking(id: _trackingId);
         }
       }

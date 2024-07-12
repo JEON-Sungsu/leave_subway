@@ -49,8 +49,10 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
   }
 
   void setStationNames({required String lineName}) async {
-    final sortedMetroByLine =
-        state.wholeMetros.where((e) => e.line == lineName).sorted((a, b) => a.name.compareTo(b.name)).toList();
+    final sortedMetroByLine = state.wholeMetros
+        .where((e) => e.line == lineName)
+        .sorted((a, b) => a.name.compareTo(b.name))
+        .toList();
     final selectedStation = sortedMetroByLine.first.name;
 
     state = state.copyWith(
@@ -101,9 +103,8 @@ class CapitalAreaMetroScreenNotifier extends StateNotifier<CapitalAreaModel> {
 
   void toggleReset() {
     state = state.copyWith(
-      destinations: state.destinations
-          .map((e) => e.copyWith(isTracking: false))
-          .toList(),
+      destinations:
+          state.destinations.map((e) => e.copyWith(isTracking: false)).toList(),
       isOtherTracking: false,
     );
   }

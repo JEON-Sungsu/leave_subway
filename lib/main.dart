@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final pref = await SharedPreferences.getInstance();
-  initLocalNotification();
+  await initLocalNotification();
   runApp(
     ProviderScope(
       overrides: [
@@ -34,6 +34,7 @@ class _AppState extends ConsumerState<_App> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    _permissionCheck();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -64,9 +65,16 @@ class _AppState extends ConsumerState<_App> with WidgetsBindingObserver {
     await ref.read(permissionProvider.notifier).setPermissionStatus();
     if (ref.read(permissionProvider) != CombinedPermissionStatus.allGranted) {
       ref.read(locationServiceProvider.notifier).cancelLocationSubscription();
-      ref
-          .read(capitalAreaMetroScreenProvider.notifier)
-          .toggleReset();
+      ref.read(capitalAreaMetroScreenProvider.notifier).toggleReset();
+    }
+  }
+
+  void _permissionCheck() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstInstall = prefs.getBool('isFirstInstall') ?? true;
+
+    if (!isFirstInstall) {
+      await ref.read(permissionProvider.notifier).setPermissionStatus();
     }
   }
 }

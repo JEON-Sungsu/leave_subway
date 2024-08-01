@@ -55,6 +55,7 @@ class CustomDrawer extends StatelessWidget {
       fontWeight: FontWeight.w600,
     );
     return Drawer(
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(8.0),

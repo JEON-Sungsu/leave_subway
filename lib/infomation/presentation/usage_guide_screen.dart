@@ -68,7 +68,12 @@ class UsageGuideScreen extends StatelessWidget {
             ),
             SizedBox(height:16),
             Text(
-              '· 하나 이상의 목적지 추적을 동시에 실행할 수 없습니다.',
+              '· 두 곳 이상의 목적지 추적을 동시에 실행할 수 없습니다.',
+              style: BASIC_PARAGRAPH_STYLE,
+            ),
+            SizedBox(height:16),
+            Text(
+              '· 서비스 사용중 문의사항이 있으면 anagma@naver.com으로 문의해주세요.',
               style: BASIC_PARAGRAPH_STYLE,
             ),
           ],

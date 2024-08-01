@@ -147,7 +147,7 @@ class _CapitalAreaMetroScreenState
 
   Future<void> _noticePermission() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isFirstInstall = prefs.getBool('isFirstInstall')!;
+    bool isFirstInstall = prefs.getBool('isFirstInstall') ?? true;
     if (isFirstInstall) {
       await prefs.setBool('isFirstInstall', false);
       _showAlert();

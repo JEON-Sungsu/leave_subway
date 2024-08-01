@@ -186,6 +186,7 @@ class _TextAnimationState extends State<_TextAnimation> {
   }
 
   void _animationDelaySet() async {
+    await Future.delayed(Duration(milliseconds: 1500));
     int delay = 300;
     for (var i = 0; i < _isVisible.length; i++) {
       await Future.delayed(Duration(milliseconds: delay), () {

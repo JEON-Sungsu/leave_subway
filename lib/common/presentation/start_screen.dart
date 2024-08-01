@@ -23,7 +23,7 @@ class _StartScreenState extends ConsumerState<StartScreen> {
   _startProcess() async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-    Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(Duration(milliseconds: 1500));
     FlutterNativeSplash.remove();
   }
 
